@@ -1,25 +1,53 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+//'App' Class based component
+class App extends Component {
+
+  // state initialisation
+  state = {  
+    inputArray: [],
+    algoSteps: [],
+    eleColorKey: [],
+    elementColors: [],
+    timeout: [],
+    currentStep: 0, 
+    count: 10,
+    delayTime: 300,
+    algorithmName: ''
+  } 
+
+  // Generate Random number in the range
+  generateRandomNum = (min, max) => {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  // Generate array elements with specified range
+  generateArrayElements = () => {
+    // Save the bar count
+    let barCount = this.state.count;
+    let inputArr = [];
+    
+    // Generate array of elemetns 
+    for (let i = 0; i < barCount; i++) {
+       inputArr.push(this.generateRandomNum(50, 200));
+    }
+
+    //This can be seen in the inspect->console
+    console.log(inputArr);
+  }
+
+
+  render() { 
+    return(
+    <div className='App'>
+      {this.generateArrayElements()}
     </div>
-  );
+    );    
+  }
+
 }
 
+//Class is added to the export
 export default App;
