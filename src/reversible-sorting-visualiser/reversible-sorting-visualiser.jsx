@@ -53,12 +53,25 @@ export default class ReversibleSortingVisualiser extends Component {
     console.log(array);
   }
 
+  /* Array elements changes should be saved. */
+  changeArrayElements = (idx, val) => {
+   let chgdArray = this.state.inputArray;
+   chgdArray[idx] = val;
+   console.log({idx, val});
+   this.setState({
+      inputArray: chgdArray,
+      algoSteps: [chgdArray],
+      currentStep: 0, /* While regenerating the array, step would be 0 */ 
+     });
+     console.log({chgdArray});
+  }
+
   render() { 
 
     // Key is for number of bars(barCount), 
     // if the parameter is idx, val, it throws the duplicate error. 
     const barHeight = this.state.inputArray.map((val, idx) => 
-         <Bar key={idx} arrIdx={idx} height={val}/>
+         <Bar key={idx} arrIdx={idx} height={val} chgdArr={this.changeArrayElements} />
     );
    /* // The below lines or the above lines both mean same
     const barHeight = this.state.inputArray.map((idx, val) => {
@@ -69,7 +82,9 @@ export default class ReversibleSortingVisualiser extends Component {
     // Curly braces represent the java script inside return 
     return( 
         <div className='ReversibleSortingVisualiser'>
-            <div className='array-bar'>{barHeight}</div>
+            <div className='array-bar'>
+                  {barHeight}
+            </div>
         </div> 
     );    
   }

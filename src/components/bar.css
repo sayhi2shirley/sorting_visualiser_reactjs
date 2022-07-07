@@ -1,0 +1,18 @@
+.bar {
+    /* top  right  bottom  left */
+    border-radius: 5px 5px 0 0;
+    /* the lesser the width more bars can accommodate */
+    width: 25px;
+  /*  height: 30px;
+    background-color: pink;
+    display: inline-block; */
+    /* display: inline; */
+    margin: 10px; /* margins/spaces between each bar */
+    margin-right: 10px;
+  }
+
+.textHeight {
+    border: none;
+    background: transparent;
+    position: relative;
+  }
