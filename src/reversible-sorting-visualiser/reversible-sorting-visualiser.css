@@ -1,0 +1,22 @@
+/*
+.array-container {
+    // display: flex;
+   // justify-content: center;
+    //align-self: center; 
+    position: absolute;
+    // left: 100px;
+    // Position from the left where the bar begins 
+    top: 100px; 
+  }
+
+.array-bar {
+    // the lesser the width more bars can accommodate 
+    width: 2px;
+    height: 30px;
+    background-color: pink;
+    display: inline-block;
+    // display: inline; 
+    margin: 0 1px; // margins/spaces between each bar 
+  }
+  */
+  
