@@ -1,16 +1,23 @@
 /* card-container in the video */
-/*.array-container {
+.arrayOutline {
     background: #818181;
-    display: flex;
+    padding: 0 1em;
+    /*display: flex;
     justify-content: center;
     align-self: center; 
     position: absolute;
     left: 100px;
     Position from the left where the bar begins 
-    top: 100px; 
+    top: 100px; */
   }
-  */
-
+  
+.container {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    height: 200px;
+    margin: 5em 0;
+}
 
 /* Frame in the video */
 .array-bar {

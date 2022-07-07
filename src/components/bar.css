@@ -15,4 +15,7 @@
     border: none;
     background: transparent;
     position: relative;
+    text-align: center;
+    transform: rotate(-90deg);
+    outline: none;
   }

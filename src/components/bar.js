@@ -1,5 +1,6 @@
 // Functional component - everything can be done by this.
 import { useState, useEffect } from "react";
+import "./bar.css";
 
 // We are using here the combination of class and functional component 
 const Bars = ({arrIdx, height, chgdArr}) => {
@@ -17,14 +18,15 @@ const Bars = ({arrIdx, height, chgdArr}) => {
         /* bar's width */
         /*width: 10,*/
         height: height,
-        /* margin-Top in css */
+        /* margin-Top in css, the below one to align to the bottom */
         marginTop: 200 - height,
     }
 
     let textHeightStyle = {
         width: height,
         top: Math.floor(height/2) - 10,
-        left: Math.floor(height/2) + 10,
+        /* To keep the text properly aligned */
+        left: -Math.floor(height/2) + 10,
     }
 
     const handleBarChange = (e) => {
@@ -55,7 +57,8 @@ const Bars = ({arrIdx, height, chgdArr}) => {
     // User can input the values
     return(
         <div className="bar" style={barStyle}>
-            <input type="number" className='textHeight' value={len} onChange={handleBarChange} />
+            <input type="number" className='textHeight' style={textHeightStyle} 
+                   value={len} onChange={handleBarChange} />
             <div className="qualityNav">
                 <div className="quantity-btn quantity-up">
                    +

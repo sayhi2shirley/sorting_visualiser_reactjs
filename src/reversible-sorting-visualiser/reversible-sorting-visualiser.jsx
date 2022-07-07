@@ -80,10 +80,14 @@ export default class ReversibleSortingVisualiser extends Component {
     */
     console.log(barHeight);
     // Curly braces represent the java script inside return 
+    // As barHeight is placed between the array-container, 
+    // Array continer should be taken care.
     return( 
         <div className='ReversibleSortingVisualiser'>
             <div className='array-bar'>
+               <div className='arrayOutline container'>
                   {barHeight}
+               </div>
             </div>
         </div> 
     );    
