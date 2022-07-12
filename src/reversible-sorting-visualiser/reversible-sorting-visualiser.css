@@ -1,8 +1,8 @@
-/* card-container in the video */
+
 .arrayOutline {
     background: #818181;
     padding: 0 1em;
-    /*display: flex;
+    /* display: flex;
     justify-content: center;
     align-self: center; 
     position: absolute;
@@ -19,17 +19,12 @@
     margin: 5em 0;
 }
 
-/* Frame in the video */
 .array-bar {
-    /* the lesser the width more bars can accommodate */
-   /* width: 2px;
-    background-color: pink;*/
-    margin: 0; /* margins/spaces between each bar */
+    /* Spaces between each bar */
+    margin: 0; 
     display: flex;
     justify-content: center;
     align-items: center;
-    /* display: inline; */
-    
   }
   
   

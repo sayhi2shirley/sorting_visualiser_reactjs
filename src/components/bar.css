@@ -1,13 +1,9 @@
 .bar {
-    /* top  right  bottom  left */
+    /* Radius order: top, right, bottom, left */
     border-radius: 5px 5px 0 0;
-    /* the lesser the width more bars can accommodate */
+    /* More bars can accommodate with lesser width */
     width: 25px;
-  /*  height: 30px;
-    background-color: pink;
-    display: inline-block; */
-    /* display: inline; */
-    margin: 10px; /* margins/spaces between each bar */
+    margin: 10px; /* Spaces between each bar */
     margin-right: 10px;
   }
 
@@ -16,6 +12,7 @@
     background: transparent;
     position: relative;
     text-align: center;
+    /* Rotates the text of the bar height */
     transform: rotate(-90deg);
     outline: none;
   }

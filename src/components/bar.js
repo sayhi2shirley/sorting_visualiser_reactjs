@@ -1,12 +1,9 @@
-// Functional component - everything can be done by this.
 import { useState, useEffect } from "react";
 import "./bar.css";
 
-// We are using here the combination of class and functional component 
+/* Bar Component to hold the random array values. */
 const Bars = ({arrIdx, height, chgdArr}) => {
 
-    // State for only this componenet Bar
-    // len is assigned a value of height.
     const [len, setLen] = useState(height);
 
     useEffect (() => {
@@ -15,27 +12,24 @@ const Bars = ({arrIdx, height, chgdArr}) => {
 
     let barStyle = {
         background: '#3d5af1',
-        /* bar's width */
-        /*width: 10,*/
-        height: height,
-        /* margin-Top in css, the below one to align to the bottom */
-        marginTop: 200 - height,
+        height: height+100,
+        /* marginTop aligns the array elements at the bottom */
+        marginTop: 200 - (height+100),
     }
 
     let textHeightStyle = {
-        width: height,
-        top: Math.floor(height/2) - 10,
-        /* To keep the text properly aligned */
-        left: -Math.floor(height/2) + 10,
+        width: height+100,
+        top: Math.floor((height+150)/2) - 10,
+        left: -Math.floor((height+100)/2) + 10,
     }
 
+    /* User's input will be adjusted in the bar */
     const handleBarChange = (e) => {
         let val = e.target.value;
         if (val === '') {
             setLen(0); 
             chgdArr(arrIdx, 0);
         } else {
-            console.log("handleBarChange-else");
             val = parseInt(e.target.value);
             if (val < 2 || val > 200) {
                 if (val < 2) {
@@ -46,24 +40,22 @@ const Bars = ({arrIdx, height, chgdArr}) => {
                     chgdArr(arrIdx, 200);
                 }
             } else {
-                console.log("handleBarChange-else-else");
-                console.log({val});
                 setLen(val);
                 chgdArr(arrIdx, val);
             }
         }
     }
 
-    // User can input the values
+    // Customised Bar to get the array elements from User.
     return(
         <div className="bar" style={barStyle}>
             <input type="number" className='textHeight' style={textHeightStyle} 
                    value={len} onChange={handleBarChange} />
-            <div className="qualityNav">
-                <div className="quantity-btn quantity-up">
+            <div className="qltyNavigation">
+                <div className="qty-btn qty-up">
                    +
                 </div>  
-                <div className="quantity-btn quantity-down">
+                <div className="qty-btn qty-down">
                    -
                 </div> 
             </div>
@@ -78,7 +70,9 @@ const Bars = ({arrIdx, height, chgdArr}) => {
                 {height}
             </div>
         </div>
-    );*/
+    );
+    */
     
 };
+
 export default Bars;
