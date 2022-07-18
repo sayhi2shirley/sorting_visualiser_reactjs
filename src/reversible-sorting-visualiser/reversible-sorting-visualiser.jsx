@@ -9,8 +9,8 @@ export default class ReversibleSortingVisualiser extends Component {
 
     this.state = {
         inputArray: [],
-        barCount: 10, /* Number of Bars */
-        algoSteps: [],
+        barCount: 10,   /* Number of Bars */
+        algoSteps: [],  /* Number of steps the alogrithm takes */
         currentStep: 0,
     };
  }
@@ -22,7 +22,7 @@ export default class ReversibleSortingVisualiser extends Component {
 
  // Generate Random number in the range
  generateRandomNum = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
  }
 
  // Generate random array elements 
@@ -50,7 +50,7 @@ export default class ReversibleSortingVisualiser extends Component {
   changeArrayElements = (idx, val) => {
    let chgdArray = this.state.inputArray;
    chgdArray[idx] = val;
-
+   console.log(chgdArray);
    // Save the array after the updation
    this.setState({
       inputArray: chgdArray,

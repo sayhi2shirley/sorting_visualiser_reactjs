@@ -2,21 +2,15 @@
 .arrayOutline {
     background: #818181;
     padding: 0 1em;
-    /* display: flex;
-    justify-content: center;
-    align-self: center; 
-    position: absolute;
-    left: 100px;
-    Position from the left where the bar begins 
-    top: 100px; */
+    border-radius: 2em;
   }
   
 .container {
     display: flex;
     justify-self: center;
     align-items: center;
-    height: 200px;
-    margin: 5em 0;
+    height: 250px;
+    margin: 5em 0; /* Space left from the top */
 }
 
 .array-bar {
