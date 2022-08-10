@@ -1,6 +1,25 @@
+.algorithm-selection-box {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  margin-left: 50px;
+  align-items: center;
+}
+
+.algorithmA {
+  flex-flow: row nowrap;
+  padding: 1rem;
+}
+
+.algoBtns {
+   margin: 5px;
+   background:#e0d4d4; 
+   justify-content: center;
+   align-items: center;
+}
 
 .arrayOutline {
-    background: #818181;
+    background: #e0d4d4;
     padding: 0 1em;
     border-radius: 2em;
   }
@@ -11,15 +30,26 @@
     align-items: center;
     height: 250px;
     margin: 5em 0; /* Space left from the top */
-}
+    margin-right: 50px; /* Space between highlight text */
+  }
 
 .array-bar {
     /* Spaces between each bar */
+    background: #b9bdbd; /* Highlight-text chgs */
     margin: 0; 
+    width: 1500px; /* Highlight-text chgs */
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   
-  
+.buttonOutline {
+    background: white;
+    margin-top: 10px;
+  }
+.code-display {
+  visibility: hidden;
+}
   

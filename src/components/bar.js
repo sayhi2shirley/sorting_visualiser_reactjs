@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import "./bar.css";
 
 /* Bar Component to hold the random array values. */
-const Bars = ({arrIdx, height, chgdArr}) => {
+const Bars = ({arrIdx, height, clrCode, chgdArr}) => {
 
     const [len, setLen] = useState(height);
-
-    console.log(len);
-    console.log(height);
+    
+    /* Pink(Not Visited), Blue(Current), 
+     * Green(Sorted/Unsorted), Yellow(Chosen to Compare)
+     */
+    const colors = ['#c9109b', '#3d5af1', '#3df15b', '#ffcc00']
     
     useEffect (() => {
         setLen(height);
@@ -15,7 +17,7 @@ const Bars = ({arrIdx, height, chgdArr}) => {
 
     /* Handling Array Bar */
     let barStyle = {
-        background: '#3d5af1',
+        background: colors[clrCode],
         height: height*10,
         /* marginTop aligns the array elements at the bottom */
         marginTop: 200 - (height*10),
@@ -48,8 +50,6 @@ const Bars = ({arrIdx, height, chgdArr}) => {
                 chgdArr(arrIdx, val);
             }
         }
-        console.log(len);
-        console.log(height);
     }
 
     /* Quantity Picker Implementation */
@@ -77,31 +77,19 @@ const Bars = ({arrIdx, height, chgdArr}) => {
     return(
         <div className="bar" style={barStyle}>
             <input type="number" className='textHeight' style={textHeightStyle} 
-                   value={len} onChange={handleBarChange} />
+                   value={len} onChange={handleBarChange}/>
             <div className="quantityPickerNavigation">
                 <div className="qnty-picker-btn qty-up"
-                     style={quantityPickerStyle} onClick={incrementQtyPkr}>
-                   +
-                </div>  
+                     style={quantityPickerStyle} 
+                     onClick={incrementQtyPkr}>
+                   + </div>  
                 <div className="qnty-picker-btn qty-down"
-                     style={quantityPickerStyle} onClick={decrementQtyPkr}>
-                   -
-                </div> 
+                     style={quantityPickerStyle} 
+                     onClick={decrementQtyPkr}>
+                   - </div> 
             </div>
         </div>
     );
-
-    // Rigid Bars with the randomised height
-    /*
-    return(
-        <div className="bar">
-            <div className="array-height">
-                {height}
-            </div>
-        </div>
-    );
-    */
-    
 };
 
 export default Bars;

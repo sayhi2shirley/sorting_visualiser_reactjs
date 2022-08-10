@@ -1,10 +1,13 @@
-function swap(arr, i, j) {
-  let temp = arr[i];
-  arr[i] = arr[j];
-  arr[j] = temp;
-}
+import {swap} from './helpers';
 
-function insertionSort(arr, myMap) 
+const insertionSortAlgorithmB = (arr, swpIn, position, arrSteps, arrColors) => {
+  let clrCode = arrColors[arrColors.length - 1].slice();
+  
+  insertionSort(arr, swpIn, arrSteps, arrColors, clrCode);
+  alogBUnSort(arr, swpIn, arrSteps, arrColors, clrCode);
+};
+
+function insertionSort(arr, myMap, stps, colors, clrCode) 
 { 
   let i, key, temp, j;
   let k = 0;
@@ -14,54 +17,77 @@ function insertionSort(arr, myMap)
       key = arr[i]; 
       myMap.get(k).push(i);
       temp = i;
-      //console.log(temp);
       j = i - 1; 
- 
+
+      /* Before-comparison-Bar-Color-Coding Start */
+      clrCode[i] = 3; 
+      clrCode[j] = 1;
+      stps.push(arr.slice());
+      colors.push(clrCode.slice());
+      /* Before-comparison-Bar-Color-Coding End */
+
       /* Move elements of arr[0..i-1], that are 
       greater than key, to one position ahead 
       of their current position */
       while (j >= 0 && arr[j] > key) { 
           myMap.get(k).push(j);
-          //console.log(myMap.get(k));
           k++;
-          
+
+          /* Before-swap-Bar-Color-Coding Start */
+          if (i === j+1) {
+              clrCode[j+1] = 3; 
+          } 
+          clrCode[j] = 1;
+          stps.push(arr.slice());
+          colors.push(clrCode.slice());
+          /* Before-swap-Bar-Color-Coding End */  
+
           arr[j + 1] = arr[j];
+
+          /* After-swap-Bar-Color-Coding Start */
+          clrCode[i] = 0;
+          clrCode[j+1] = 0;
+          clrCode[j] = 0;
+          stps.push(arr.slice());
+          colors.push(clrCode.slice());
+          /* After-swap-Bar-Color-Coding End */
+
           temp = j;
+          /* Go to previous element */
           j = j - 1; 
           myMap.set(k, []);
           myMap.get(k).push(temp);
-          //console.log(myMap.get(k));
       }
       arr[j + 1] = key; 
       myMap.get(k).push(temp);
-      //console.log(myMap.get(k));
   }
+  colors[colors.length - 1] = new Array(arr.length).fill(2);
 }
 
 
-function alogBUnSort(arr, myMap)
+function alogBUnSort(arr, myMap, stps, colors, clrCode)
 {
-const reversedArr = Array.from(myMap).reverse();
+   const reversedArr = Array.from(myMap).reverse();
 
-reversedArr.forEach(([key, value]) => {
-  swap(arr, myMap.get(key)[0], myMap.get(key)[1]);
-});
-//console.log(reversedArr);
+   reversedArr.forEach(([key, value]) => {
+      /* Before-swap-Bar-Color-Coding Start */
+      clrCode[myMap.get(key)[0]] = 1; 
+      clrCode[myMap.get(key)[1]] = 1;
+      colors.push(clrCode.slice());
+      stps.push(arr.slice());
+      /* Before-swap-Bar-Color-Coding End */ 
+
+      swap(arr, myMap.get(key)[0], myMap.get(key)[1]);
+
+      /* After-swap-Bar-Color-Coding Start */
+      clrCode[myMap.get(key)[0]] = 0; 
+      clrCode[myMap.get(key)[1]] = 0;
+      colors.push(clrCode.slice());
+      stps.push(arr.slice());
+      /* After-swap-Bar-Color-Coding End */
+   });
+   colors[colors.length - 1] = new Array(arr.length).fill(2);
+   return;
 }
 
-
-// This is our unsorted array
-var arr = [5, 1, 4, 2, 8];
-var swapdInd = new Map();
-
-// Now pass this array to the bblSort() function
-insertionSort(arr, swapdInd);
-// Print the sorted array
-console.log("Insertion Sort\nSorted array arr ");
-console.log(arr);
-//Unsort the sorted array
-console.log("\nUnsorting: ");
-alogBUnSort(arr, swapdInd);
-// Print the unsorted array
-console.log("UnSorted sorted array arr ");
-console.log(arr);
+export default insertionSortAlgorithmB;
