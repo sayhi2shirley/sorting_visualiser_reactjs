@@ -30,26 +30,42 @@ class ReversibleSortingVisualiser extends Component {
         algoSteps: [],  /* Number of steps the alogrithm takes */
         currentStep: 0,
         algorithm: 'Algorithm-A Bubble Sort',
+        psuedocode: [
+          'for (var i = 0; i < arr.length; i++) {\n' +
+          '    for (var j = 0; j < ( arr.length - i -1 ); j++) {\n'+
+          '        if (arr[j] > arr[j + 1]) {\n' +
+          '            swap(arr, j, j+1);\n' +
+          '            swap(ind, j, j+1);\n' +
+          '     }\n' +
+          '}\n',
+          'for (var i = 0; i < arr.length; i++) {',
+          '3333 Take your finger out of your ear and listen to me',
+          '4444 Take your finger out of your ear and listen to me'
+        ],
         algo: [
           { //key: 0, value: 
             _id: 1, 
             name: 'Algorithm-A Bubble Sort',
-            funcName: bubbleSortAlgorithmA
+            funcName: bubbleSortAlgorithmA,
+            text: 'Sort - Bubble Sort, Unsort - Indices Array'   
           },
           { //key: 1, value: 
             _id: 2, 
             name: 'Algorithm-A Insertion Sort',
-            funcName: insertionSortAlgorithmA
+            funcName: insertionSortAlgorithmA,
+            text: 'Sort - Insertion Sort,  Unsort - Indices Array' 
           },
           { //key: 2, value: 
             _id: 3, 
             name: 'Algorithm-B Bubble Sort',
-            funcName: bubbleSortAlgorithmB
+            funcName: bubbleSortAlgorithmB,
+            text: 'Sort - Bubble Sort,  Unsort - Tracking Swapped positions' 
           },          
           { //key: 3, value: 
             _id: 4, 
             name: 'Algorithm-B Insertion Sort',
-            funcName: insertionSortAlgorithmB
+            funcName: insertionSortAlgorithmB,
+            text: 'Sort - Insertion Sort,  Unsort - Tracking Swapped positions'
           }
         ],
     };
@@ -129,6 +145,15 @@ getKeyByAlgoName = (map, searchValue) => {
       let colors = this.state.barColors.slice();
       
       let key = this.getKeyByAlgoName(this.state.algo, this.state.algorithm);
+
+      /* Display by default the chosen algorithm */
+      document.getElementById('selectedAlgorithm').innerHTML = ''; // To clear the previous text
+      document.getElementById('selectedAlgorithm').innerHTML = 
+                                    this.state.algo[key].text; 
+
+      document.getElementById('dislayPseudocode').innerHTML = ''; // To clear the previous text
+      document.getElementById('dislayPseudocode').innerHTML = 
+                          '<pre>' + this.state.psuedocode[key] + '</pre>'; 
 
       /* Number of Steps and Colors will be calculated */
       if (this.state.algo[key].name === 'Algorithm-A Bubble Sort' ||
@@ -312,10 +337,16 @@ getKeyByAlgoName = (map, searchValue) => {
     this.setState({
       algorithm: algos.name,
     });
+
     /* Number of Steps need to be recalculated
      * after changing the algorithm
      */
     this.clearTimeout();
+
+    document.getElementById('selectedAlgorithm').innerHTML = ''; // To clear the previous text
+    document.getElementById('selectedAlgorithm').innerHTML = 
+                                  algos.text; 
+
     document.getElementById("rstbtn").disabled = false;
     document.getElementById("plybtn").disabled = false;
     document.getElementById("pasbtn").disabled = true;
@@ -323,11 +354,9 @@ getKeyByAlgoName = (map, searchValue) => {
     document.getElementById("bckbtn").disabled = true;
     document.getElementById("frwdbtn").disabled = false;
 
-    var hid = document.getElementsByClassName("code-display");
-    // Emulates jQuery $(element).is(':hidden');
-    if(hid[0].offsetWidth > 0 && hid[0].offsetHeight > 0) {
-        hid[0].style.visibility = "visible";
-    }
+    document.getElementById('dislayPseudocode').innerHTML = ''; // To clear the previous text
+    document.getElementById('dislayPseudocode').innerHTML = 
+    '<pre>' + this.state.psuedocode[algos._id - 1] + '</pre>'; 
 
     this.clearColorCode();
         // Save the array after the generation
@@ -357,18 +386,20 @@ getKeyByAlgoName = (map, searchValue) => {
                  onClick={this.selectAlgorithm(algos)} 
                  value={algos.name}>{algos.name}</button>
     );
+ 
 
     return( 
         <div className='ReversibleSortingVisualiser'>
             <div className='algorithm-selection-box'>
                {algoButtons}
+               <p id="selectedAlgorithm"></p>
             </div>  
             <div className='array-bar'>
                <div className='arrayOutline container'>
                   {barHeight}
                </div>
-               <div class="code-display">
-                 <p class="and">Take your finger out of your ear and listen to me</p>
+               <div className="code-display">
+                 <p id="dislayPseudocode"></p>
                </div>
             </div>
 
