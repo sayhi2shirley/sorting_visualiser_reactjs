@@ -1,75 +1,73 @@
-.algorithm-selection-box {
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  margin-left: 50px;
-  align-items: center;
-}
-
-.algorithmA {
-  flex-flow: row nowrap;
-  padding: 1rem;
-}
-
-.algoBtns {
-   margin: 5px;
-   background:#e0d4d4; 
-   justify-content: center;
-   align-items: center;
-}
-
-.arrayOutline {
-    background: #e0d4d4;
-    padding: 0 1em;
-    border-radius: 2em;
-  }
-  
-.container {
+  .algorithm-selection-box {
     display: flex;
-    justify-self: center;
+    flex-direction: column;
+    margin-top: 30px;
+    margin-left: 50px;
     align-items: center;
-    height: 250px;
-    margin: 5em 0; /* Space left from the top */
-    margin-right: 50px; /* Space between highlight text */
   }
 
-.array-bar {
-    /* Spaces between each bar */
-    background: #b9bdbd; /* Highlight-text chgs */
-    margin: 0; 
-    width: 1500px; /* Highlight-text chgs */
-    display: flex;
+  .algorithmA {
+    flex-flow: row nowrap;
+    padding: 1rem;
+  }
+
+  .algoBtns {
+    margin: 5px;
+    background:#e0d4d4; 
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  
-.buttonOutline {
-    background: white;
-    margin-top: 10px;
-  }
-  
-.code-display {
-  margin: 5em 0;
   }
 
-#displayPseudocode {
-  color:black;
-  font-size: 20px;
-  text-align:justify;
-  margin: 5em 0;
-  font-weight: bold;
-  /* To preserve the white space. */
-  white-space: pre-wrap;
-  }
+  .arrayOutline {
+      background: #e0d4d4;
+      padding: 0 1em;
+      border-radius: 2em;
+    }
+    
+  .container {
+      display: flex;
+      justify-self: center;
+      align-items: center;
+      height: 250px;
+      margin: 5em 0; /* Space left from the top */
+      margin-right: 50px; /* Space between highlight text */
+    }
 
-#selectedAlgorithm {
+  .array-bar {
+      /* Spaces between each bar */
+      background: #b9bdbd; /* Highlight-text chgs */
+      margin: 0; 
+      width: 1500px; /* Highlight-text chgs */
+      display: flex;  
+      justify-content: center;
+      align-items: center; 
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    
+  .buttonOutline {
+      background: white;
+      margin-top: 10px;
+    }
+    
+  .code-display {
+    margin: 5em 0;
+    text-align: justify;
+    }
+
+  #displayPseudocode {
     color:black;
     font-size: 20px;
-    animation: algomove 3s infinite;
+    margin: 5em 0;
+    font-weight: bold;
     }
 
-@keyframes algomove {
-      50% {font-weight: bold;}
-    }
+  #selectedAlgorithm {
+      color:black;
+      font-size: 20px;
+      animation: algomove 3s infinite;
+      }
+
+  @keyframes algomove {
+        50% {font-weight: bold;}
+      }

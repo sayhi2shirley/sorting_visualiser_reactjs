@@ -11,6 +11,7 @@ import Stop from '@material-ui/icons/StopSharp'
 import Pause from '@material-ui/icons/PauseSharp'
 import Forward from '@material-ui/icons/SkipNextSharp';
 import Backward from '@material-ui/icons/SkipPreviousSharp';
+import pseudocode from '../components/utility';
 
 //Class based component - ReversibleSortingVisualiser
 class ReversibleSortingVisualiser extends Component {
@@ -30,42 +31,30 @@ class ReversibleSortingVisualiser extends Component {
         algoSteps: [],  /* Number of steps the alogrithm takes */
         currentStep: 0,
         algorithm: 'Algorithm-A Bubble Sort',
-        psuedocode: [
-          'for (var i = 0; i < arr.length; i++) {\n' +
-          '    for (var j = 0; j < ( arr.length - i -1 ); j++) {\n'+
-          '        if (arr[j] > arr[j + 1]) {\n' +
-          '            swap(arr, j, j+1);\n' +
-          '            swap(ind, j, j+1);\n' +
-          '     }\n' +
-          '}\n',
-          'for (var i = 0; i < arr.length; i++) {',
-          '3333 Take your finger out of your ear and listen to me',
-          '4444 Take your finger out of your ear and listen to me'
-        ],
         algo: [
           { //key: 0, value: 
             _id: 1, 
             name: 'Algorithm-A Bubble Sort',
             funcName: bubbleSortAlgorithmA,
-            text: 'Sort - Bubble Sort, Unsort - Indices Array'   
+            text: 'Algorithm-A Sort - Bubble Sort, Unsort - Indices Array'   
           },
           { //key: 1, value: 
             _id: 2, 
             name: 'Algorithm-A Insertion Sort',
             funcName: insertionSortAlgorithmA,
-            text: 'Sort - Insertion Sort,  Unsort - Indices Array' 
+            text: 'Algorithm-A Sort - Insertion Sort, Unsort - Indices Array' 
           },
           { //key: 2, value: 
             _id: 3, 
             name: 'Algorithm-B Bubble Sort',
             funcName: bubbleSortAlgorithmB,
-            text: 'Sort - Bubble Sort,  Unsort - Tracking Swapped positions' 
+            text: 'Algorithm-B Sort - Bubble Sort, Unsort - Tracking Swapped positions' 
           },          
           { //key: 3, value: 
             _id: 4, 
             name: 'Algorithm-B Insertion Sort',
             funcName: insertionSortAlgorithmB,
-            text: 'Sort - Insertion Sort,  Unsort - Tracking Swapped positions'
+            text: 'Algorithm-B Sort - Insertion Sort, Unsort - Tracking Swapped positions'
           }
         ],
     };
@@ -130,15 +119,15 @@ class ReversibleSortingVisualiser extends Component {
      });
  };
 
-getKeyByAlgoName = (map, searchValue) => {
-  for (let [key, value] of map.entries()) {
-    if (value.name === searchValue) {
-        //console.log(key, value.name);
-        return key;
-    }
-  }
-};
-
+ getKeyByAlgoName = (map, searchValue) => {
+   for (let [key, value] of map.entries()) {
+     if (value.name === searchValue) {
+         //console.log(key, value.name);
+         return key;
+     }
+   }
+ };
+ 
   generateAlgoSteps = () => {
       let array = this.state.inputArray.slice();
       let steps = this.state.algoSteps.slice();
@@ -150,10 +139,10 @@ getKeyByAlgoName = (map, searchValue) => {
       document.getElementById('selectedAlgorithm').innerHTML = ''; // To clear the previous text
       document.getElementById('selectedAlgorithm').innerHTML = 
                                     this.state.algo[key].text; 
-
+      /* Display the pseudocode */
       document.getElementById('dislayPseudocode').innerHTML = ''; // To clear the previous text
       document.getElementById('dislayPseudocode').innerHTML = 
-                          '<pre>' + this.state.psuedocode[key] + '</pre>'; 
+                          '<pre>' + pseudocode[key]() + '</pre>'; 
 
       /* Number of Steps and Colors will be calculated */
       if (this.state.algo[key].name === 'Algorithm-A Bubble Sort' ||
@@ -354,9 +343,9 @@ getKeyByAlgoName = (map, searchValue) => {
     document.getElementById("bckbtn").disabled = true;
     document.getElementById("frwdbtn").disabled = false;
 
-    document.getElementById('dislayPseudocode').innerHTML = ''; // To clear the previous text
+    document.getElementById('dislayPseudocode').innerHTML = '';
     document.getElementById('dislayPseudocode').innerHTML = 
-    '<pre>' + this.state.psuedocode[algos._id - 1] + '</pre>'; 
+    '<pre>' + pseudocode[algos._id - 1]() + '</pre>'; 
 
     this.clearColorCode();
         // Save the array after the generation
@@ -376,10 +365,6 @@ getKeyByAlgoName = (map, searchValue) => {
               clrCode={this.state.colorCode[idx]} 
               chgdArr={this.changeArrayElements} /> 
     );
-    /* // The below lines or the above lines both mean same
-    const barHeight = this.state.inputArray.map((idx, val) => {
-          return <Bar key={idx} index={idx} ength={val}/>;
-    }); */
 
     const algoButtons = this.state.algo?.map(algos => 
          <button className='algoBtns' key={algos._id} 
@@ -387,7 +372,6 @@ getKeyByAlgoName = (map, searchValue) => {
                  value={algos.name}>{algos.name}</button>
     );
  
-
     return( 
         <div className='ReversibleSortingVisualiser'>
             <div className='algorithm-selection-box'>
