@@ -1,13 +1,15 @@
 import {swap} from './helpers';
 
-const insertionSortAlgorithmB = (arr, swpIn, position, arrSteps, arrColors) => {
+const insertionSortAlgorithmB = (arr, swpIn, position, arrSteps, lastSortStep, arrColors) => {
   let clrCode = arrColors[arrColors.length - 1].slice();
   
-  insertionSort(arr, swpIn, arrSteps, arrColors, clrCode);
+  insertionSort(arr, swpIn, arrSteps, lastSortStep, arrColors, clrCode);
+  console.log('Sort algo B insert ' +arrSteps.length + ' ' + lastSortStep.length);
   alogBUnSort(arr, swpIn, arrSteps, arrColors, clrCode);
+  console.log('Unort algo B insert ' +arrSteps.length + ' ' + lastSortStep.length);
 };
 
-function insertionSort(arr, myMap, stps, colors, clrCode) 
+function insertionSort(arr, myMap, stps, lastSortStep, colors, clrCode) 
 { 
   let i, key, temp, j;
   let k = 0;
@@ -23,6 +25,7 @@ function insertionSort(arr, myMap, stps, colors, clrCode)
       clrCode[i] = 3; 
       clrCode[j] = 1;
       stps.push(arr.slice());
+      lastSortStep.push(arr.slice());
       colors.push(clrCode.slice());
       /* Before-comparison-Bar-Color-Coding End */
 
@@ -39,6 +42,7 @@ function insertionSort(arr, myMap, stps, colors, clrCode)
           } 
           clrCode[j] = 1;
           stps.push(arr.slice());
+          lastSortStep.push(arr.slice());
           colors.push(clrCode.slice());
           /* Before-swap-Bar-Color-Coding End */  
 
@@ -49,6 +53,7 @@ function insertionSort(arr, myMap, stps, colors, clrCode)
           clrCode[j+1] = 0;
           clrCode[j] = 0;
           stps.push(arr.slice());
+          lastSortStep.push(arr.slice());
           colors.push(clrCode.slice());
           /* After-swap-Bar-Color-Coding End */
 
@@ -63,7 +68,6 @@ function insertionSort(arr, myMap, stps, colors, clrCode)
   }
   colors[colors.length - 1] = new Array(arr.length).fill(2);
 }
-
 
 function alogBUnSort(arr, myMap, stps, colors, clrCode)
 {

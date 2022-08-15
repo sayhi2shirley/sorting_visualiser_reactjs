@@ -15,61 +15,88 @@
 
   .algoBtns {
     margin: 5px;
-    background:#e0d4d4; 
+    background: #e0d4d4;
     justify-content: center;
     align-items: center;
   }
 
   .arrayOutline {
-      background: #e0d4d4;
-      padding: 0 1em;
-      border-radius: 2em;
-    }
-    
+    background: #e0d4d4;
+    padding: 0 1em;
+    border-radius: 2em;
+  }
+
   .container {
-      display: flex;
-      justify-self: center;
-      align-items: center;
-      height: 250px;
-      margin: 5em 0; /* Space left from the top */
-      margin-right: 50px; /* Space between highlight text */
-    }
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    height: 250px;
+    margin: 5em 0;
+    /* Space left from the top */
+    margin-right: 50px;
+    /* Space between highlight text */
+  }
 
   .array-bar {
-      /* Spaces between each bar */
-      background: #b9bdbd; /* Highlight-text chgs */
-      margin: 0; 
-      width: 1500px; /* Highlight-text chgs */
-      display: flex;  
-      justify-content: center;
-      align-items: center; 
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-    
+    /* Spaces between each bar */
+    background: #b9bdbd;
+    /* Highlight-text chgs */
+    margin: 0;
+    width: 100%;
+    /* Highlight-text chgs */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
   .buttonOutline {
-      background: white;
-      margin-top: 10px;
-    }
-    
+    background: white;
+    margin-top: 10px;
+  }
+
   .code-display {
     margin: 5em 0;
     text-align: justify;
-    }
+  }
 
   #displayPseudocode {
-    color:black;
+    color: black;
     font-size: 20px;
+    font-style: normal;
     margin: 5em 0;
     font-weight: bold;
-    }
+  }
 
   #selectedAlgorithm {
-      color:black;
-      font-size: 20px;
-      animation: algomove 3s infinite;
-      }
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    animation: algomoves 3s infinite;
+  }
 
-  @keyframes algomove {
-        50% {font-weight: bold;}
-      }
+  @keyframes algomoves {
+    50% {
+      font-weight: bold;
+    }
+  }
+
+  .numberofOperations {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .performance {
+    background: #e0d4d4;
+    /* Highlight-text chgs */
+    margin: 0;
+    width: 100%;
+    /* Highlight-text chgs */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }

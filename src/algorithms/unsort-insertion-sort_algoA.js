@@ -1,13 +1,15 @@
 
-const insertionSortAlgorithmA = (arr, ind, position, arrSteps, arrColors) => {
+const insertionSortAlgorithmA = (arr, ind, position, arrSteps, lastSortStep, arrColors) => {
     let clrCode = arrColors[arrColors.length - 1].slice();
     
-    insertionSortAlgoA(arr, ind, arrSteps, arrColors, clrCode, 1);
-    insertionSortAlgoA(ind, arr, arrSteps, arrColors, clrCode, 0);
+    insertionSortAlgoA(arr, ind, arrSteps, lastSortStep, arrColors, clrCode, 1);
+    console.log('Sort algo A insert ' + arrSteps.length + ' ' + lastSortStep.length);
+    insertionSortAlgoA(ind, arr, arrSteps, lastSortStep, arrColors, clrCode, 0);
+    console.log('Unsort algo A insert ' +arrSteps.length + ' ' + lastSortStep.length);
 };
 
 // Creating the insertionSort function
-const insertionSortAlgoA = (arr, ind, stps, colors, clrCode, sorting) => { 
+const insertionSortAlgoA = (arr, ind, stps, lastSortStep, colors, clrCode, sorting) => { 
     let i, key, temp, j; 
     let n = arr.length;
     for (i = 1; i < n; i++)
@@ -20,6 +22,7 @@ const insertionSortAlgoA = (arr, ind, stps, colors, clrCode, sorting) => {
         clrCode[i] = 3; 
         clrCode[j] = 1;
         sorting ? stps.push(arr.slice()) : stps.push(ind.slice());
+        if (sorting === 1) lastSortStep.push(arr.slice());
         colors.push(clrCode.slice());
         /* Before-comparison-Bar-Color-Coding End */
 
@@ -34,6 +37,7 @@ const insertionSortAlgoA = (arr, ind, stps, colors, clrCode, sorting) => {
             } 
             clrCode[j] = 1;
             sorting ? stps.push(arr.slice()) : stps.push(ind.slice());
+            if (sorting === 1) lastSortStep.push(arr.slice());
             colors.push(clrCode.slice());
             /* Before-swap-Bar-Color-Coding End */
 
@@ -44,7 +48,16 @@ const insertionSortAlgoA = (arr, ind, stps, colors, clrCode, sorting) => {
             clrCode[i] = 0;
             clrCode[j+1] = 0;
             clrCode[j] = 0;
+            if (sorting === 1) { 
+                //console.log('Sorting first push ' + stps.length); 
+            } else {
+                console.log('Unsorting first push ' + stps.length); 
+            }
             sorting ? stps.push(arr.slice()) : stps.push(ind.slice());
+            if (sorting === 1) lastSortStep.push(arr.slice());
+            if (sorting === 1) { 
+
+            } else {console.log('Unsorting after first push ' + stps.length); }
             colors.push(clrCode.slice());
             /* After-swap-Bar-Color-Coding End */
 
@@ -55,9 +68,17 @@ const insertionSortAlgoA = (arr, ind, stps, colors, clrCode, sorting) => {
         ind[j + 1] = temp;
         clrCode[i] = 0;
         clrCode[j] = 0;
+        if (sorting === 1) { 
+
+        } else { console.log('Unsorting 2 first push ' + stps.length); }
         sorting ? stps.push(arr.slice()) : stps.push(ind.slice());
+        if (sorting === 1) lastSortStep.push(arr.slice());
+        if (sorting === 1) { 
+            
+        } else {console.log('Unsorting 2 after first push ' + stps.length); }
         colors.push(clrCode.slice());
     } 
+    console.log(stps.length);
     colors[colors.length - 1] = new Array(arr.length).fill(2);
     return;
 };
