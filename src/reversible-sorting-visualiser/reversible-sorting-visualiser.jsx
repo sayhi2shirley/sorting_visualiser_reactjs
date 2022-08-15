@@ -11,7 +11,7 @@ import Stop from '@material-ui/icons/StopSharp'
 import Pause from '@material-ui/icons/PauseSharp'
 import Forward from '@material-ui/icons/SkipNextSharp';
 import Backward from '@material-ui/icons/SkipPreviousSharp';
-import pseudocode from '../components/utility';
+import {pseudocode} from '../components/utility';
 
 //Class based component - ReversibleSortingVisualiser
 class ReversibleSortingVisualiser extends Component {
@@ -30,31 +30,31 @@ class ReversibleSortingVisualiser extends Component {
         delay: 300,
         algoSteps: [],  /* Number of steps the alogrithm takes */
         currentStep: 0,
-        algorithm: 'Algorithm-A Bubble Sort',
+        algorithm: 'Sort - Bubble, Unsort - Auxiliary Indices[]',
         algo: [
           { //key: 0, value: 
             _id: 1, 
-            name: 'Algorithm-A Bubble Sort',
+            name: 'Sort - Bubble, Unsort - Auxiliary Indices[]',
             funcName: bubbleSortAlgorithmA,
-            text: 'Algorithm-A Sort - Bubble Sort, Unsort - Indices Array'   
+            text: 'Method 1 : Sort - Bubble, Unsort using Auxiliary Indices[]'   
           },
           { //key: 1, value: 
             _id: 2, 
-            name: 'Algorithm-A Insertion Sort',
+            name: 'Sort - Insertion,  Unsort - Auxiliary Indices[]',
             funcName: insertionSortAlgorithmA,
-            text: 'Algorithm-A Sort - Insertion Sort, Unsort - Indices Array' 
+            text: 'Method 1 : Sort - Insertion,  Unsort using Auxiliary Indices[]' 
           },
           { //key: 2, value: 
             _id: 3, 
-            name: 'Algorithm-B Bubble Sort',
+            name: 'Sort - Bubble, Unsort - SwappedPositions[[], []]',
             funcName: bubbleSortAlgorithmB,
-            text: 'Algorithm-B Sort - Bubble Sort, Unsort - Tracking Swapped positions' 
+            text: 'Method 2 : Sort - Bubble, Unsort using tracked Swapped positions' 
           },          
           { //key: 3, value: 
             _id: 4, 
-            name: 'Algorithm-B Insertion Sort',
+            name: 'Sort - Insertion, Unsort - SwappedPositions[[], []]',
             funcName: insertionSortAlgorithmB,
-            text: 'Algorithm-B Sort - Insertion Sort, Unsort - Tracking Swapped positions'
+            text: 'Method 2 : Sort - Insertion, Unsort using tracked Swapped positions'
           }
         ],
     };
@@ -376,8 +376,8 @@ class ReversibleSortingVisualiser extends Component {
         <div className='ReversibleSortingVisualiser'>
             <div className='algorithm-selection-box'>
                {algoButtons}
-               <p id="selectedAlgorithm"></p>
             </div>  
+            <p id="selectedAlgorithm"></p>
             <div className='array-bar'>
                <div className='arrayOutline container'>
                   {barHeight}

@@ -17,9 +17,11 @@ function algoB_BubbleSort(arr, myMap, stps, colors, clrCode)
 	
         // Last i elements are already in place
         for (var j = 0; j < ( arr.length - i -1 ); j++) {
+          /* Before-swap-Bar-Color-Coding Start */
           clrCode[j] = 1; 
           clrCode[j + 1] = 1;
           colors.push(clrCode.slice());
+          /* Before-swap-Bar-Color-Coding End */
         	// Checking if the item at present iteration
         	// is greater than the next iteration
         	if (arr[j] > arr[j+1]) {
@@ -31,9 +33,11 @@ function algoB_BubbleSort(arr, myMap, stps, colors, clrCode)
               console.log(myMap.get(k));
               k++;
 	        }
+           /* After-swap-Bar-Color-Coding Start */
           stps.push(arr.slice());
           clrCode[j] = 0; 
           clrCode[j + 1] = 0;
+           /* After-swap-Bar-Color-Coding End */
         }
         clrCode[arr.length - i - 1] = 2;
         stps.push(arr.slice());

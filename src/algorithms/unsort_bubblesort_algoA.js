@@ -1,7 +1,9 @@
 import {swap} from './helpers';
+import {highlightPseudocode} from '../components/utility.js'
 
 /* 'BubbleSort AlgorithmA' Component to hold the random array values. */
 const bubbleSortAlgorithmA = (arr, ind, position, arrSteps, arrColors) => {
+    console.log(arrColors.length);
     let clrCode = arrColors[arrColors.length - 1].slice();
     
     bubbleSortAlgoA(arr, ind, arrSteps, arrColors, clrCode, 1);
@@ -11,12 +13,16 @@ const bubbleSortAlgorithmA = (arr, ind, position, arrSteps, arrColors) => {
 // Creating the bubbleSort function
 const bubbleSortAlgoA = (arr, ind, stps, colors, clrCode, sorting) => {
     for (var i = 0; i < arr.length; i++) {
+        highlightPseudocode('for (i = 0; i < arr.length; i++) {');
+        
         // Last element is set in place after each i iteration
         for (var j = 0; j < ( arr.length - i -1 ); j++) {
+            highlightPseudocode('for (j = 0; j < (arr.length - i -1); j++) {');
             /* Before-swap-Bar-Color-Coding Start */
             clrCode[j] = 1; 
             clrCode[j + 1] = 1;
             colors.push(clrCode.slice());
+            console.log(colors.length);
             /* Before-swap-Bar-Color-Coding End */
 
         	// Check if the successive element is smaller
@@ -35,6 +41,7 @@ const bubbleSortAlgoA = (arr, ind, stps, colors, clrCode, sorting) => {
         sorting ? stps.push(arr.slice()) : stps.push(ind.slice());
         colors.push(clrCode.slice());
     }
+    console.log(stps.length);
     colors[colors.length - 1] = new Array(arr.length).fill(2);
     return;
 }
