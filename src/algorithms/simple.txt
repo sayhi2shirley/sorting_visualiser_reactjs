@@ -1,0 +1,359 @@
+
+
+AlgorithmABubbleSort (arr[0..n], swapdInd)
+Input: The original array arr[], and a map 'swapdInd'
+contains swapped indices as value
+
+     k = 0
+     for i = 0 to  arr.length do 
+         for j = 0 to arr.length - i -1 do
+             if arr[j] > arr[j+1] then
+                 swapdInd.set(k, [])
+                 swapdInd.get(k).push(j)
+                 swapdInd.get(k).push(j+1)
+                 swap(arr, j, j+1)
+                 k++
+            end if
+        end for
+    end for
+
+
+
+AlgorithmAUnSort (arr[0..n], swapdInd)
+Input: The original array arr[], and a map 'swapdInd'
+contains swapped indices as value
+
+    reversedArr = Array.from(swapdInd).reverse()
+    
+    for each reversedArr[key, value] do
+        swap(arr, swapdInd.get(key)[0], swapdInd.get(key)[1])
+    end for
+
+
+
+    
+AlgorithmAInsertionSort (arr[0..n], swapdInd)
+Input: The original array arr[], and a map 'swapdInd'
+contains swapped indices as value
+
+    for i = 1 to arr.length do
+        swapdInd.set(k, [])
+        key = arr[i]
+        swapdInd.get(k).push(i)
+        temp = i
+        j = i - 1
+
+        while j >= 0 && arr[j] > key do
+            swapdInd.get(k).push(j)
+            k++
+            arr[j + 1] = arr[j]
+            temp = j
+            j = j - 1
+            swapdInd.set(k, [])
+            swapdInd.get(k).push(temp)
+        end while
+
+        arr[j + 1] = key
+        swapdInd.get(k).push(temp)
+    end for
+
+
+AlgorithmBBubbleSort (arr[0..n], ind[0..n])
+Input: The original array arr[], and an array ind[]
+to track the position of the array elements
+
+        for i = 0 to arr.length do
+            for j = 0 to arr.length - i -1 do
+                if arr[j] > arr[j + 1] then
+                   swap(arr, j, j+1)\n' +
+                    swap(ind, j, j+1)
+                end if
+            end for
+        end for
+
+
+
+AlgorithmBUnSortBubble (ind[0..n], arr[0..n])
+Input: An array ind[] contains the position of the 
+sorted array elements, and sorted array arr[]
+
+        for i = 0 to ind.length do
+            for j = 0 to ind.length - i -1 do 
+                if ind[j] > ind[j + 1] then
+                    swap(ind, j, j+1)
+                    swap(arr, j, j+1)
+                end if
+            end for
+        end for
+   
+
+AlgorithmBInsertionSort (arr[0..n], ind[0..n])
+Input: The original array arr[], and an array ind[]
+to track the position of the array elements
+
+    for i = 1 to arr.length do
+        key = arr[i]
+        temp = ind[i]
+        j = i - 1
+        while j >= 0 && arr[j] > key do
+            arr[j + 1] = arr[j]
+            ind[j + 1] = ind[j]
+            j = j - 1
+            arr[j + 1] = key
+            ind[j + 1] = temp
+        end while
+    end for 
+
+
+AlgorithmBUnSortInsertion (ind[0..n], arr[0..n])
+Input: An array ind[] contains the position of the 
+sorted array elements, and sorted array arr[]
+
+    for i = 0 to ind.length do
+        key = ind[i]
+        temp = arr[i]
+        j = i - 1
+        while j >= 0 && ind[j] > key do
+            ind[j + 1] = ind[j]
+            arr[j + 1] = arr[j]
+            j = j - 1
+            ind[j + 1] = key
+            arr[j + 1] = temp
+        end while
+    end for
+
+
+
+--------------------------------------------------------
+
+
+
+function algorithmAUnsort(arr, swapdInd) 
+{
+    reversedArr = Array.from(swapdInd).reverse()
+    
+    reversedArr.forEach(([key, value]) => {
+        swap(arr, myMap.get(key)[0], myMap.get(key)[1]);
+    });
+    return;
+}
+
+
+
+
+
+AlgorithmAUnSort (arr[0..n], swapdInd)
+Input: The original array arr[], and a map 'swapdInd'
+contains swapped indices as value
+
+    reversedArr = Array.from(swapdInd).reverse()
+    
+    for each reversedArr[key, value] do
+        swap(arr, swapdInd.get(key)[0], swapdInd.get(key)[1])
+    end for
+
+
+
+var swapdInd = new Map();
+
+function algorithmAinsertionSort(arr, swapdInd) 
+{ 
+    let i, key, temp, j;
+    let k = 0;
+    for (i = 1; i < arr.length; i++)
+    { 
+        swapdInd.set(k, []);
+        key = arr[i]; 
+        swapdInd.get(k).push(i);
+        temp = i;
+        j = i - 1; 
+  
+        /* Move elements of arr[0..i-1], that are 
+        greater than key, to one position ahead 
+        of their current position */
+        while (j >= 0 && arr[j] > key) { 
+            swapdInd.get(k).push(j);
+            k++;
+            arr[j + 1] = arr[j];
+            temp = j;
+            /* Go to previous element */
+            j = j - 1; 
+            swapdInd.set(k, []);
+            swapdInd.get(k).push(temp);
+        }
+        arr[j + 1] = key; 
+        swapdInd.get(k).push(temp);
+    }
+}
+
+
+function approach2BubbleSort(arr, ind) 
+{
+    for (var i = 0; i < arr.length; i++) {
+        
+        // Last element is set in place after each i iteration
+        for (var j = 0; j < ( arr.length - i -1 ); j++) {
+        	// Check if the successive element is smaller
+        	if (arr[j] > arr[j + 1]) {
+                swap(arr, j, j+1);
+	            swap(ind, j, j+1);
+	        }
+        }
+    }
+    return;
+}
+
+
+
+function approach2BubbleUnsort(ind, arr) 
+{
+    for (var i = 0; i < ind.length; i++) {
+        
+        // Last element is set in place after each i iteration
+        for (var j = 0; j < ( ind.length - i -1 ); j++) {
+        	/* Check if the successive element's 
+               position is smaller */
+        	if (ind[j] > ind[j + 1]) {
+                swap(ind, j, j+1);
+	            swap(arr, j, j+1);
+	        }
+        }
+    }
+    return;
+}
+
+
+
+
+function approach2InsertionSort(arr, ind)  
+{
+    let i, key, temp, j; 
+    let n = arr.length;
+    for (i = 1; i < n; i++)
+    { 
+        key = arr[i]; 
+        temp = ind[i];
+        j = i - 1; 
+
+        /* Move elements of arr[0..i-1], that are 
+        greater than key, to one position ahead 
+        of their current position */
+        while (j >= 0 && arr[j] > key)
+        { 
+
+            arr[j + 1] = arr[j]; 
+            ind[j + 1] = ind[j];
+
+            /* Go to previous element */
+            j = j - 1; 
+        } 
+        arr[j + 1] = key; 
+        ind[j + 1] = temp;
+    } 
+    return;
+}
+
+
+
+function approach2InsertionUnsort(ind, arr) 
+{ 
+    let i, key, temp, j; 
+    let n = ind.length;
+    for (i = 1; i < n; i++)
+    { 
+        key = ind[i]; 
+        temp = arr[i];
+        j = i - 1; 
+
+        /* Move elements of arr[0..i-1], that are 
+        greater than key, to one position ahead 
+        of their current position */
+        while (j >= 0 && ind[j] > key)
+        { 
+
+            ind[j + 1] = ind[j]; 
+            arr[j + 1] = arr[j];
+
+            /* Go to previous element */
+            j = j - 1; 
+        } 
+        ind[j + 1] = key; 
+        arr[j + 1] = temp;
+    } 
+    return;
+}
+
+
+const barHeight = this.state.inputArray?.map((val, idx) =>
+        <Bar key={idx} arrIdx={idx} height={val}/>
+);
+
+playAnimation = () => {
+    let stp = this.state.currentStep;
+    let noOfSteps = this.state.algoSteps;
+    let color = this.state.barColors;
+    let sortStp = this.state.sortingSteps;
+
+    this.setState({
+       inputArray: noOfSteps[stp],
+       colorCode: color[stp],
+       currentStep: stp + 1,
+      });
+
+    if (this.state.animationOn === 1) {
+        return;
+    }
+
+    /* setup another timeout for next step unless
+     * it finished executing or paused
+     */
+    if (this.state.currentStep < (sortStp.length -1)) {
+       setTimeout(this.playAnimation, this.state.delay);
+    } 
+
+};
+
+  /* Set colorCode, currentStep, timeout, and delay */
+  handlePlay = () => {
+    let flag = this.state.animationOn;
+    flag = 0;
+    let noOfSteps = this.state.algoSteps;
+    let sortStp = this.state.sortingSteps;
+
+    /* Fix for play again after finish */
+    if (this.state.currentStep >= (sortStp.length - 1)) {
+        return;
+    } 
+
+    this.clearTimeout();
+    /*
+     * Set the animationOn back to 0 
+     * to avoid pause immediately.
+     */
+    this.setState({
+      animationOn: flag,
+    });
+ 
+    setTimeout(this.playAnimation, this.state.delay); 
+};
+
+
+
+     /* Execution will stop when noOfSteps - currentStep */
+     while (itr < noOfSteps.length - this.state.currentStep) {
+        let valTimeout = setTimeout(() => {
+           let valCurrentStep = this.state.currentStep;
+           this.setState({
+              inputArray: noOfSteps[valCurrentStep],
+              colorCode: color[valCurrentStep],
+              currentStep: valCurrentStep + 1,
+           });
+           timeOut.push(valTimeout);
+        }, this.state.delay * itr);
+        itr++;
+        console.log(itr);
+    }
+
+
+
+    

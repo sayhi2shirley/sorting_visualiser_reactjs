@@ -68,18 +68,34 @@
     margin: 5em 0;
     font-weight: bold;
   }
+  #sizeArr {
+    margin-left: 5em 0;
+    /* Aligns the paragraph horizontally */
+    display: inline-block;
+  }
 
+  #speedArr {
+    margin-left: 5em 0;
+    /* Aligns the paragraph horizontally */
+    display: inline-block;
+  }
+
+  /* Animation Code */
+  @keyframes algomove {
+    50% {
+      font-weight: bold;
+    }
+  }
+
+  /* This element applied to animation */
   #selectedAlgorithm {
     color: black;
     font-size: 20px;
     font-weight: bold;
-    animation: algomoves 3s infinite;
-  }
-
-  @keyframes algomoves {
-    50% {
-      font-weight: bold;
-    }
+    animation-name: algomove;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;   
+     /*animation: algomoves 3s infinite;*/
   }
 
   .numberofOperations {
@@ -99,4 +115,22 @@
     align-items: center;
     margin-top: 10px;
     margin-bottom: 5px;
+    /* Vertically aligns the text */
+    text-align: justify;
+  }
+
+  #arrsize {
+    margin-left: 5em;
+    margin-right: 5em;
+    background: #e0d4d4;
+  } 
+  #speed {
+    margin-right: 5em;
+    background: #e0d4d4;
+  }
+
+  .slider {
+    height: 100%;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
   }

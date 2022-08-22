@@ -1,56 +1,84 @@
 import {swap} from './helpers';
-//import {highlightPseudocode} from '../components/utility.js'
 
 /* 'BubbleSort AlgorithmA' Component to hold the random array values. */
-const bubbleSortAlgorithmA = (arr, ind, position, arrSteps, lastSortStep, arrColors) => {
-    console.log(arrColors.length);
-    
-    let clrCode = arrColors[arrColors.length - 1].slice();
-    
-    bubbleSortAlgoA(arr, ind, arrSteps, lastSortStep, arrColors, clrCode, 1);
-    console.log('Sort ' + arrSteps.length);
-    //lastSortStep = arrSteps.map((arr) => arr.slice());
-    console.log('Sort ' + arrSteps.length + 'last step' + lastSortStep.length);
-    bubbleSortAlgoA(ind, arr, arrSteps, lastSortStep, arrColors, clrCode, 0);
-    console.log('UnSort ' + arrSteps.length + 'last step' + lastSortStep.length);
+const bubbleSortAlgorithmA = (arr, swpIn, position, arrSteps, lastSortStep, arrColors) => {
+  let clrCode = arrColors[arrColors.length - 1].slice();
+  
+  algoA_BubbleSort(arr, swpIn, arrSteps, lastSortStep, arrColors, clrCode);
+  console.log('Sort algo A Bubble ' + arrSteps.length + ' ' + lastSortStep.length);
+  alogAUnSort(arr, swpIn, arrSteps, arrColors, clrCode);
+  console.log('Unsort algo A Bubble ' + arrSteps.length + ' ' + lastSortStep.length);
 };
 
-// Creating the bubbleSort function
-const bubbleSortAlgoA = (arr, ind, stps, lastSortStep, colors, clrCode, sorting) => {
-    for (var i = 0; i < arr.length; i++) {
-        //highlightPseudocode('for (i = 0; i < arr.length; i++) {');
-        
-        // Last element is set in place after each i iteration
-        for (var j = 0; j < ( arr.length - i -1 ); j++) {
-            //highlightPseudocode('for (j = 0; j < (arr.length - i -1); j++) {');
-            /* Before-swap-Bar-Color-Coding Start */
-            clrCode[j] = 1; 
-            clrCode[j + 1] = 1;
-            colors.push(clrCode.slice());
-            //console.log(colors.length);
-            /* Before-swap-Bar-Color-Coding End */
 
-        	// Check if the successive element is smaller
-        	if (arr[j] > arr[j + 1]) {
-                swap(arr, j, j+1);
-	            swap(ind, j, j+1);
+// Creating the bblSort function
+function algoA_BubbleSort(arr, myMap, stps, lastSortStep, colors, clrCode)
+{
+    var k = 0;	
+    for (var i = 0; i < arr.length; i++) {
+	
+        // Last i elements are already in place
+        for (var j = 0; j < ( arr.length - i -1 ); j++) {
+          /* Before-swap-Bar-Color-Coding Start */
+          clrCode[j] = 1; 
+          clrCode[j + 1] = 1;
+          colors.push(clrCode.slice());
+          /* Before-swap-Bar-Color-Coding End */
+        	// Checking if the item at present iteration
+        	// is greater than the next iteration
+        	if (arr[j] > arr[j+1]) {
+        	    myMap.set(k, []);
+        	    myMap.get(k).push(j);
+        	    myMap.get(k).push(j+1);
+             	// If the condition is true then swap them
+              swap(arr, j, j+1);
+              //console.log(myMap.get(k)); // To display swapped-indices
+              k++;
 	        }
-            //if (sorting === 0) {console.log(stps.length);}
-            /* After-swap-Bar-Color-Coding Start */
-            sorting ? stps.push(arr.slice()) : stps.push(ind.slice());
-            if (sorting === 1) lastSortStep.push(arr.slice());
-            clrCode[j] = 0; 
-            clrCode[j + 1] = 0;
-            /* After-swap-Bar-Color-Coding End */
+           /* After-swap-Bar-Color-Coding Start */
+          stps.push(arr.slice());
+          lastSortStep.push(arr.slice());
+          clrCode[j] = 0; 
+          clrCode[j + 1] = 0;
+           /* After-swap-Bar-Color-Coding End */
         }
         clrCode[arr.length - i - 1] = 2;
-        sorting ? stps.push(arr.slice()) : stps.push(ind.slice());
-        if (sorting === 1) lastSortStep.push(arr.slice());
+        stps.push(arr.slice());
+        lastSortStep.push(arr.slice());
         colors.push(clrCode.slice());
     }
-    //console.log(stps.length);
     colors[colors.length - 1] = new Array(arr.length).fill(2);
     return;
+}
+
+function alogAUnSort(arr, myMap, stps, colors, clrCode)
+{
+  const reversedArr = Array.from(myMap).reverse();
+  //console.log("algo A bubble unsort " + stps.length);
+
+  reversedArr.forEach(([key, value]) => {
+
+    /* Before-swap-Bar-Color-Coding Start */
+    clrCode[myMap.get(key)[0]] = 1; 
+    clrCode[myMap.get(key)[1]] = 1;
+    colors.push(clrCode.slice());
+    stps.push(arr.slice());
+    //console.log("algo A bubble unsort before swap " + stps.length);
+    /* Before-swap-Bar-Color-Coding End */
+
+    swap(arr, myMap.get(key)[0], myMap.get(key)[1]);
+
+    /* After-swap-Bar-Color-Coding Start */
+    clrCode[myMap.get(key)[0]] = 0; 
+    clrCode[myMap.get(key)[1]] = 0;
+    colors.push(clrCode.slice());
+    stps.push(arr.slice());
+    //console.log("algo A bubble unsort after swap " + stps.length);
+    /* After-swap-Bar-Color-Coding End */
+  });
+  colors[colors.length - 1] = new Array(arr.length).fill(2);
+  //console.log(reversedArr);
+  return;
 }
 
 export default bubbleSortAlgorithmA;
