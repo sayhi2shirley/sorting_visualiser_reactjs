@@ -3,7 +3,7 @@
     /* Horizontally aligns the button */
     flex-direction: row;
     margin-top: 30px;
-    margin-left: 10px;
+    margin-left: 3px;
     justify-content: space-between;
     align-items: center;
   }
@@ -14,7 +14,7 @@
   }
 
   .algoBtns {
-    margin: 5px;
+    margin: 3px;
     background: #e0d4d4;
     justify-content: center;
     align-items: center;
@@ -68,15 +68,16 @@
     margin: 5em 0;
     font-weight: bold;
   }
+
   #sizeArr {
-    margin-left: 5em 0;
+    margin-left: 1em 0;
     /* Aligns the paragraph horizontally */
     display: inline-block;
   }
 
   #speedArr {
-    margin-left: 5em 0;
     /* Aligns the paragraph horizontally */
+    margin-left: 1em 0;
     display: inline-block;
   }
 
@@ -120,17 +121,24 @@
   }
 
   #arrsize {
-    margin-left: 5em;
-    margin-right: 5em;
+    margin-left: 2em;
     background: #e0d4d4;
   } 
   #speed {
-    margin-right: 5em;
+    margin-right: 1em;
     background: #e0d4d4;
   }
 
-  .slider {
+.slider {
     height: 100%;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+}
+
+#outputSize {
+  margin-left: 1em;
+  margin-right: 5em;
+}
+
+#outputSpeed {
+  margin-left: 1em;
+  margin-right: 5em;
+}

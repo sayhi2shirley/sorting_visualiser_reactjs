@@ -337,8 +337,6 @@ playAnimation = () => {
     setTimeout(this.playAnimation, this.state.delay); 
 };
 
-
-
      /* Execution will stop when noOfSteps - currentStep */
      while (itr < noOfSteps.length - this.state.currentStep) {
         let valTimeout = setTimeout(() => {
@@ -354,6 +352,60 @@ playAnimation = () => {
         console.log(itr);
     }
 
+AlgorithmBUnSortInsertion (ind[0..n], arr[0..n])
+Input: An array ind[] contains the position of the 
+sorted array elements, and sorted array arr[]
+
+    for i = 0 to ind.length do
+        key = ind[i]
+        temp = arr[i]
+        j = i - 1
+        while j >= 0 && ind[j] > key do
+            ind[j + 1] = ind[j]
+            arr[j + 1] = arr[j]
+            j = j - 1
+            ind[j + 1] = key
+            arr[j + 1] = temp
+        end while
+    end for
+
+
 
 
     
+
+
+  permute(arr, result, m)
+  sortedPerm = result.slice().sort();
+
+  for i = 0 to sortedPerm.length do
+    hash[sortedPerm[i]] = i
+  end for 
+
+  if sorting then
+      permNum = hash[arr]
+      ind = 0 
+  else 
+      ind = permNum
+  end if 
+
+  for val of sortedPerm[0] do
+      resultArr[j++] = val
+  end for
+
+
+permute (arr[0..n], result[], m[])
+Input: An array arr[] contains the original 
+array, m[] initially holds empty array and 
+result[][] contains empty array.
+
+  if arr.length === 0 then
+    result.push(m)
+    return
+  else 
+    for i = 0 to arr.length do
+      let curr = arr.slice()
+      let next = curr.splice(i, 1)
+      permute(curr.slice(), result, m.concat(next))
+    end for
+  end if

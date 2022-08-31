@@ -5,15 +5,15 @@ import "./bar.css";
 const Bars = ({arrIdx, height, clrCode, chgdArr}) => {
 
     const [len, setLen] = useState(height);
-    
+
+    useEffect (() => {
+        setLen(height);
+    }, [height])
+
     /* Pink(Not Visited), Blue(Current), 
      * Green(Sorted/Unsorted), Yellow(Chosen to Compare)
      */
     const colors = ['#c9109b', '#3d5af1', '#3df15b', '#ffcc00']
-    
-    useEffect (() => {
-        setLen(height);
-    }, [height])
 
     /* Handling Array Bar */
     let barStyle = {
@@ -29,7 +29,7 @@ const Bars = ({arrIdx, height, clrCode, chgdArr}) => {
         left: -Math.floor((height*10)/2) + 10,
     }
 
-    /* User's input will be adjusted in the bar */
+    /* User's input will be adjusted as the bar's height */
     const handleBarChange = (e) => {
         let val = e.target.value;
         if (val === '') {
@@ -37,6 +37,8 @@ const Bars = ({arrIdx, height, clrCode, chgdArr}) => {
             chgdArr(arrIdx, 0);
         } else {
             val = parseInt(e.target.value);
+            /* User entered value is below 
+               0 and above 20 */
             if (val < 0 || val > 20) {
                 if (val < 0) {
                     setLen(0);
@@ -57,6 +59,7 @@ const Bars = ({arrIdx, height, clrCode, chgdArr}) => {
         top: (height*10) + 15,
     }
  
+    /* Increments the bar's height by 1 */
     const incrementQtyPkr = () => {
         if (len === 20) {
             return;
@@ -65,6 +68,7 @@ const Bars = ({arrIdx, height, clrCode, chgdArr}) => {
         chgdArr(arrIdx, len + 1);
     }
 
+    /* Decrements the bar's height by 1 */
     const decrementQtyPkr = () => {
         if (len === 0) {
             return;

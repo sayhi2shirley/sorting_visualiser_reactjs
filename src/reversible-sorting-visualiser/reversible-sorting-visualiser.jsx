@@ -5,6 +5,7 @@ import bubbleSortAlgorithmA from '../algorithms/unsort_bubblesort_algoA.js';
 import insertionSortAlgorithmA from '../algorithms/unsort_insertionsort_algoA';
 import bubbleSortAlgorithmB from '../algorithms/unsort_bubblesort_algoB';
 import insertionSortAlgorithmB from '../algorithms/unsort_insertionsort_algoB';
+import permutationSortAlgorithmC from '../algorithms/unsort_permutationsort_algoC'
 import Sort from '@material-ui/icons/SortSharp';
 import Reset from '@material-ui/icons/RotateLeft';
 import Stop from '@material-ui/icons/StopSharp'
@@ -14,26 +15,22 @@ import Backward from '@material-ui/icons/SkipPreviousSharp';
 import Unsort from '@material-ui/icons/BarChartSharp';
 import { pseudocode } from '../components/utility';
 
-
-//var arrSize = arraySizeChg.value;
-
-//arraySizeChg.addEventListener("input", ReversibleSortingVisualiser.updateArraySize);
-
 //Class based component - ReversibleSortingVisualiser
 class ReversibleSortingVisualiser extends Component {
   constructor(props) {
     super(props);
-    this.generateArrayElements = this.generateArrayElements.bind(this);
-    this.updateArraySize = this.updateArraySize.bind(this);
+  
+    
     this.state = {
       inputArray: [],
-      barCount: 0,   /* Number of Bars */
+      origArray: [],
+      barCount: 0,    /* Array Size */
       indices: [],    /* Algorithm A */
       swpIndices: {}, /* Algorithm B */
+      permuteNum: 0,  /* Algorithm C */
       animationOn: 0,
       colorCode: [],
       barColors: [],
-      timeout: [],
       delay: 200,
       sortingSteps: [], /* Number of steps required to sort */
       algoSteps: [],  /* Number of steps required to sort and unsort */
@@ -48,7 +45,6 @@ class ReversibleSortingVisualiser extends Component {
           text: 'Algorithm-A Sort-Bubble Sort, Unsort-Tracking Swapped positions',
           tc: 'Sort - O(n^2), Unsorting - O(n)',
           sc: 'Sort - O(n^2), Unsorting - O(n)'
-
         },
         { //key: 1, value: 
           _id: 2,
@@ -73,23 +69,35 @@ class ReversibleSortingVisualiser extends Component {
           text: 'Algorithm-B Sort-Insertion Sort, Unsort-Indices Array',
           tc: 'Sort - O(n^2), Unsorting - O(n^2)',
           sc: 'Sort - O(n)  , Unsorting - O(n)'
+        },
+        { //key: 4, value: 
+          _id: 5,
+          name: 'Algorithm-C Permutation Sort',
+          funcName: permutationSortAlgorithmC,
+          text: 'Algorithm-C Sort-Permutation, Unsort-Permutation',
+          tc: 'Sort - O(n!), Unsorting - O(n!)',
+          sc: 'Sort - O(n!), Unsorting - O(n!)'
         }
       ],
     };
-    
   }
 
-  // Renders the updated data afte r all the page is rendered
+  // Renders the updated data after the page is rendered
   componentDidMount() {
+    
+    // To avoid componentDidMount calling twice
+    if (this.first) return; 
+    this.first = true;
+
     let arrSz = document.getElementById("arrsize");
-    console.log( " arrSz.value " + arrSz.value);
 
     this.setState({
       barCount: arrSz.value,
     }, () => this.generateArrayElements());
+
   }
 
-  // Generate Random number in the range
+  // Generate random number in the range between 0(min) and 20(max)
   generateRandomNum = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
@@ -98,12 +106,15 @@ class ReversibleSortingVisualiser extends Component {
   generateArrayElements = () => {
     let bar = [];
     let idx = [];
-    
+
     let count = this.state.barCount;
 
-    console.log(this.state.barCount);
-    this.clearTimeout();
+    /* Fills the colorCode & barColors with default values */
+    //this.clearTimeout();
     this.clearColorCode();
+
+    document.getElementById("arrsize").disabled = false;
+    document.getElementById("speed").disabled = false;
     document.getElementById("rstbtn").disabled = false;
     document.getElementById("plybtn").disabled = false;
     document.getElementById("unsrtbtn").disabled = true;
@@ -116,36 +127,44 @@ class ReversibleSortingVisualiser extends Component {
       bar.push(this.generateRandomNum(0, 20));
       idx.push(i);
       var swapdInd = new Map();
+      var permutes = new Map();
     }
-    
-    console.log(this.state.barCount);
+
     // Save the array after the generation
     this.setState({
       inputArray: bar,
+      origArray: bar,
       algoSteps: [bar],
       barCount: count,
       indices: idx,
       swpIndices: swapdInd,
+      permuteList: permutes,
       sortingSteps: [bar],
       /* After generation, step would be 0 */
       currentStep: 0,
     }, () => this.generateAlgoSteps());
- 
-    console.log(this.state.barCount);
-    console.log(bar);
   };
 
   updateArraySize = () => {
-    let count = this.state.barCount;
     let arrSz = document.getElementById("arrsize");
-    count = arrSz.value;
-    console.log("count " + count + " arrSz.value " + arrSz.value);
 
     this.setState({
       barCount: arrSz.value,
     }, () => this.generateArrayElements());
 
-    console.log("updateArraySize" + this.state.barCount); 
+    /* Update the Array's size in the output */
+    document.getElementById('outputSize').value = arrSz.value;
+  };
+
+  updateAnimationSpeed = () => {
+    let animSpeed = document.getElementById("speed");
+
+    this.setState({
+      delay: animSpeed.value,
+    });
+
+    /* Update the Animation speed in the output */
+    document.getElementById('outputSpeed').value = animSpeed.value;
   };
 
   /* Captures the array elements changes */
@@ -159,7 +178,7 @@ class ReversibleSortingVisualiser extends Component {
       algoSteps: [chgdArray],
       sortingSteps: [chgdArray],
       currentStep: 0,
-    });
+    }, () => this.generateAlgoSteps());
   };
 
   getKeyByAlgoName = (map, searchValue) => {
@@ -173,11 +192,11 @@ class ReversibleSortingVisualiser extends Component {
 
   generateAlgoSteps = () => {
     let array = this.state.inputArray.slice();
-    let steps = this.state.algoSteps.slice();
+    let totalSteps = this.state.algoSteps.slice();
     let colors = this.state.barColors.slice();
-    let sortNum = this.state.sortingSteps.slice();
-
+    let sortSteps = this.state.sortingSteps.slice();
     let key = this.getKeyByAlgoName(this.state.algo, this.state.algorithm);
+    var perm = new Array(1).fill(0);
 
     /* Display by default the chosen algorithm */
     document.getElementById('selectedAlgorithm').innerHTML = ''; // To clear the previous text
@@ -187,60 +206,68 @@ class ReversibleSortingVisualiser extends Component {
     /* Display the pseudocode */
     document.getElementById('dislayPseudocode').innerHTML = ''; // To clear the previous text
     document.getElementById('dislayPseudocode').innerHTML =
-      '<pre>' + pseudocode[key]() + '</pre>';
-    //console.log('sorting steps' + sortNum.length + ' steps ' + steps.length);
-    
-    /* Number of Steps and Colors will be calculated */
+    '<pre>' + pseudocode[key]() + '</pre>';
+    //console.log('sorting steps' + sortSteps.length + ' steps ' + steps.length);
+
+    /* Number of Steps and colors[][] will be created */
     if (this.state.algo[key].name === 'Algorithm-A Bubble Sort' ||
       this.state.algo[key].name === 'Algorithm-A Insertion Sort') {
-      console.log(key, this.state.algo[key].funcName);
+
       let swpIn = this.state.swpIndices;
-      this.state.algo[key].funcName(array, swpIn, 0, steps, sortNum, colors);
-      //console.log('sorting steps' + sortNum.length + ' steps ' + steps.length);
+      this.state.algo[key].funcName(array, swpIn, totalSteps, sortSteps, colors);
+
+    } else if (this.state.algo[key].name === 'Algorithm-B Bubble Sort' ||
+      this.state.algo[key].name === 'Algorithm-B Insertion Sort') {
+
+      let idx = this.state.indices;
+      this.state.algo[key].funcName(array, idx, totalSteps, sortSteps, colors);
+      
     } else {
-      //console.log("name" + this.state.algo[key].name + " key " + key + " algo name " + this.state.algo[key].funcName);
-      let idx = this.state.indices.slice();
-      this.state.algo[key].funcName(array, idx, 0, steps, sortNum, colors);
+      this.state.algo[key].funcName(array, perm, totalSteps, sortSteps, colors);
     }
-    //console.log('sorting steps' + sortNum.length);
+
     this.setState({
-      algoSteps: steps,
+      algoSteps: totalSteps,
       barColors: colors,
-      sortingSteps: sortNum,
+      sortingSteps: sortSteps,
+      permuteNum: perm,
     });
 
     /* Display the Number of Operations */
     document.getElementById('numberofOperations').innerHTML = ''; // To clear the previous text
     document.getElementById('numberofOperations').innerHTML =
-    // eslint-disable-next-line
-    '<pre>' + '\nInput Array:      ' + array + 
-    '\nNumber of Steps:  ' + steps.length +
-    '\nTime Complexity:  ' + this.state.algo[key].tc +
-    '\nSpace Complexity: ' + this.state.algo[key].sc + '</pre>';
+      // eslint-disable-next-line
+      '<pre>' + '\nInput Array:        ' + array +
+      '\nTotal No of Steps:  ' + totalSteps.length +
+      '\nSorting Steps  :    ' + sortSteps.length +
+      '\nUnsorting Steps:    ' + (totalSteps.length - sortSteps.length) +
+      '\nTime Complexity:    ' + this.state.algo[key].tc +
+      '\nSpace Complexity:   ' + this.state.algo[key].sc + '</pre>';
 
   };
 
-  clearTimeout = () => {
+  /*clearTimeout = () => {
     this.state.timeout.forEach(timeoutVal => this.clearTimeout(timeoutVal));
     this.setState({ timeout: [] });
-  };
+  }; */
 
-  // clearColorKey
+  // Clear the color code of the bar
   clearColorCode = () => {
-    //console.log(this.state.barCount);
     let size = this.state.barCount;
     /* Fills the initial color(Pink) before 
        execution by setting the value as 0 */
-    let numOfBars = new Array(size).fill(0);
-    //console.log(numOfBars);
-    while((size-1) > 0) {
-      size--;
+    const numOfBars = new Array(size).fill(0);
+
+    // Deep copy is performed
+    while ((size) >= 0) {
       numOfBars.push(0);
+      size--;
     }
-    //console.log(numOfBars);
     this.setState({ colorCode: numOfBars, barColors: [numOfBars] });
   };
 
+  /* Timer function to execute the next step
+    of sorting after the delay */
   playAnimation = () => {
     let stp = this.state.currentStep;
     let noOfSteps = this.state.algoSteps;
@@ -254,20 +281,20 @@ class ReversibleSortingVisualiser extends Component {
     });
 
     if (this.state.animationOn === 1) {
+      document.getElementById("plybtn").disabled = true;
       return;
     }
 
     /* setup another timeout for next step unless
      * it finished executing or paused
      */
-    console.log('Play' + this.state.currentStep + '  ' + noOfSteps.length +
-      ' sort step ' + sortStp.length);
-
     if (this.state.currentStep < (sortStp.length - 1)) {
       setTimeout(this.playAnimation, this.state.delay);
     }
-    // Finished executing
+    // Finished executing the sorting, update buttons
     if (this.state.currentStep === (sortStp.length - 1)) {
+      document.getElementById("arrsize").disabled = false;
+      document.getElementById("speed").disabled = false;
       document.getElementById("rstbtn").disabled = false;
       document.getElementById("bckbtn").disabled = false;
       document.getElementById("frwdbtn").disabled = false;
@@ -278,11 +305,12 @@ class ReversibleSortingVisualiser extends Component {
     }
   };
 
+  /* Timer function to execute the next step
+    of unsorting after the delay */
   unsortAnimation = () => {
     let stp = this.state.currentStep;
     let noOfSteps = this.state.algoSteps;
     let color = this.state.barColors;
-    let sortStp = this.state.sortingSteps;
 
     this.setState({
       inputArray: noOfSteps[stp],
@@ -291,19 +319,21 @@ class ReversibleSortingVisualiser extends Component {
     });
 
     if (this.state.animationOn === 1) {
+      document.getElementById("unsrtbtn").disabled = true;
       return;
     }
 
     /* setup another timeout for next step unless
-     * it finished executing or paused
+     * unsorting is finished executing or paused
      */
-    console.log('Unsort' + this.state.currentStep + '  ' + noOfSteps.length + ' sort step ' + sortStp.length);
-
     if (this.state.currentStep < (noOfSteps.length - 1)) {
       setTimeout(this.unsortAnimation, this.state.delay);
     }
-    // Finished executing
+
+    // Finished executing the unsorting, update buttons
     if (this.state.currentStep === (noOfSteps.length - 1)) {
+      document.getElementById("arrsize").disabled = false;
+      document.getElementById("speed").disabled = false;
       document.getElementById("rstbtn").disabled = false;
       document.getElementById("bckbtn").disabled = false;
       document.getElementById("frwdbtn").disabled = true;
@@ -314,23 +344,22 @@ class ReversibleSortingVisualiser extends Component {
     }
   };
 
-  /* Set colorCode, currentStep, timeout, and delay */
-  handlePlay = () => {
+  /* Set colorCode, currentStep, inputArray, and animationOn flag */
+  handleSort = () => {
     let flag = this.state.animationOn;
     flag = 0;
-    let noOfSteps = this.state.algoSteps;
-    let sortStp = this.state.sortingSteps;
 
+    /* Button shouldn't be enabled if the steps are 
+     more than sortingSteps.length */
+    let sortStp = this.state.sortingSteps;
     if (this.state.currentStep >= (sortStp.length - 1)) {
       document.getElementById("plybtn").disabled = true;
       return;
     }
 
-    /* Fix for play again after finish */
-    //if (this.state.currentStep >= (noOfSteps.length - 1)) {
-    console.log('Play' + this.state.currentStep + '  ' + noOfSteps.length + ' sort step ' + sortStp.length);
-
-    this.clearTimeout();
+    //this.clearTimeout();
+    document.getElementById("arrsize").disabled = true;
+    document.getElementById("speed").disabled = true;
     document.getElementById("plybtn").disabled = true;
     document.getElementById("pasbtn").disabled = false;
     document.getElementById("rstbtn").disabled = true;
@@ -349,27 +378,29 @@ class ReversibleSortingVisualiser extends Component {
     setTimeout(this.playAnimation, this.state.delay);
   };
 
-  /* Set colorCode, currentStep, timeout, and delay */
+  /* Set colorCode, currentStep, inputArray, and animationOn flag */
   handleUnsorting = () => {
     let flag = this.state.animationOn;
     flag = 0;
-    let noOfSteps = this.state.algoSteps;
-    let sortStp = this.state.sortingSteps;
-    let curStep = this.state.currentStep;
 
+    let curStep = this.state.currentStep;
     if (curStep < this.state.sortingSteps) {
       return;
     }
 
+    /* Button shouldn't be enabled if the 
+     steps are less than sortingSteps.length or
+     more than algoSteps */
+    let noOfSteps = this.state.algoSteps;
+    let sortStp = this.state.sortingSteps;
     if (this.state.currentStep >= (noOfSteps.length - 1) ||
       this.state.currentStep <= (sortStp.length - 1)) {
       document.getElementById("unsrtbtn").disabled = true;
       return;
     }
 
-    console.log('Unsorting ' + this.state.currentStep + '  ' + noOfSteps.length + ' sort step ' + sortStp.length);
-
-    this.clearTimeout();
+    document.getElementById("arrsize").disabled = true;
+    document.getElementById("speed").disabled = true;
     document.getElementById("plybtn").disabled = true;
     document.getElementById("pasbtn").disabled = false;
     document.getElementById("rstbtn").disabled = true;
@@ -393,16 +424,25 @@ class ReversibleSortingVisualiser extends Component {
     let flag = this.state.animationOn;
     flag = 1;
 
+    if (currentStp >= (this.state.algoSteps.length - 1)) {
+      document.getElementById("plybtn").disabled = true;
+      this.setState({
+        animationOn: flag,
+      });
+      return;
+    }
+
     this.setState({
       currentStep: currentStp,
       inputArray: this.state.algoSteps[currentStp],
       colorCode: this.state.barColors[currentStp],
       animationOn: flag,
     });
+
     if (currentStp <= (this.state.sortingSteps.length - 1)) {
       document.getElementById("unsrtbtn").disabled = true;
       document.getElementById("plybtn").disabled = false;
-    }  else if (currentStp >= (this.state.algoSteps.length - 1)) {
+    } else if (currentStp >= (this.state.algoSteps.length - 1)) {
       document.getElementById("plybtn").disabled = true;
       document.getElementById("unsrtbtn").disabled = true;
     } else {
@@ -410,6 +450,8 @@ class ReversibleSortingVisualiser extends Component {
       document.getElementById("plybtn").disabled = true;
     }
 
+    document.getElementById("arrsize").disabled = true;
+    document.getElementById("speed").disabled = false;
     document.getElementById("rstbtn").disabled = true;
     document.getElementById("pasbtn").disabled = true;
     document.getElementById("stpbtn").disabled = false;
@@ -429,6 +471,8 @@ class ReversibleSortingVisualiser extends Component {
       animationOn: flag,
     });
 
+    document.getElementById("arrsize").disabled = false;
+    document.getElementById("speed").disabled = false;
     document.getElementById("rstbtn").disabled = false;
     document.getElementById("plybtn").disabled = true;
     document.getElementById("unsrtbtn").disabled = true;
@@ -441,12 +485,10 @@ class ReversibleSortingVisualiser extends Component {
   handleBackward = () => {
     let currentStp = this.state.currentStep;
 
-    if (currentStp === 0) return;
-
-    document.getElementById("rstbtn").disabled = false;
-    document.getElementById("pasbtn").disabled = true;
-    document.getElementById("stpbtn").disabled = true;
-    document.getElementById("frwdbtn").disabled = false;
+    if (currentStp === 0) {
+      document.getElementById("arrsize").disabled = false;
+      return;
+    }
 
     if (currentStp === 1) {
       document.getElementById("plybtn").disabled = false;
@@ -455,19 +497,23 @@ class ReversibleSortingVisualiser extends Component {
 
     currentStp -= 1;
 
+    document.getElementById("arrsize").disabled = false;
+    document.getElementById("speed").disabled = false;
+    document.getElementById("rstbtn").disabled = false;
+    document.getElementById("pasbtn").disabled = true;
+    document.getElementById("stpbtn").disabled = true;
+    document.getElementById("frwdbtn").disabled = false;
+
     this.setState({
       currentStep: currentStp,
       inputArray: this.state.algoSteps[currentStp],
       colorCode: this.state.barColors[currentStp],
     });
 
-    console.log("BW algoSteps " + this.state.algoSteps.length +
-      " sorting steps " + this.state.sortingSteps.length +
-      " current step " + currentStp);
     if (currentStp <= (this.state.sortingSteps.length - 1)) {
       document.getElementById("unsrtbtn").disabled = true;
       document.getElementById("plybtn").disabled = false;
-    }  else if (currentStp >= (this.state.algoSteps.length - 1)) {
+    } else if (currentStp >= (this.state.algoSteps.length - 1)) {
       document.getElementById("plybtn").disabled = true;
       document.getElementById("unsrtbtn").disabled = true;
     } else {
@@ -480,15 +526,14 @@ class ReversibleSortingVisualiser extends Component {
   handleForward = () => {
     let currentStp = this.state.currentStep;
 
-
+    document.getElementById("arrsize").disabled = false;
+    document.getElementById("speed").disabled = false;
     document.getElementById("rstbtn").disabled = false;
     document.getElementById("plybtn").disabled = false;
     document.getElementById("pasbtn").disabled = true;
     document.getElementById("stpbtn").disabled = true;
     document.getElementById("bckbtn").disabled = false;
 
-    console.log('Forward' + currentStp + ' ' + this.state.algoSteps.length);
-    //if (currentStp === this.state.algoSteps.length) {
     if (this.state.currentStep >= (this.state.algoSteps.length - 1)) {
       document.getElementById("frwdbtn").disabled = true;
       document.getElementById("plybtn").disabled = true;
@@ -504,9 +549,6 @@ class ReversibleSortingVisualiser extends Component {
       colorCode: this.state.barColors[currentStp],
     });
 
-    console.log(" forward algoSteps " + this.state.algoSteps.length +
-      " sorting steps " + this.state.sortingSteps.length +
-      " current step " + currentStp);
     if (currentStp <= (this.state.sortingSteps.length - 1)) {
       document.getElementById("unsrtbtn").disabled = true;
       document.getElementById("plybtn").disabled = false;
@@ -523,22 +565,17 @@ class ReversibleSortingVisualiser extends Component {
   /* Calculate the number of steps for the chosen
    * Algorithm with the same Bar heights.
    */
-
   selectAlgorithm = algos => () => {
-    //console.log(algos);
     this.setState({
       algorithm: algos.name,
     });
-
-    /* Number of Steps need to be recalculated
-     * after changing the algorithm
-     */
-    this.clearTimeout();
 
     document.getElementById('selectedAlgorithm').innerHTML = ''; // To clear the previous text
     document.getElementById('selectedAlgorithm').innerHTML =
       algos.text;
 
+    document.getElementById("arrsize").disabled = false;
+    document.getElementById("speed").disabled = false;
     document.getElementById("rstbtn").disabled = false;
     document.getElementById("plybtn").disabled = false;
     document.getElementById("unsrtbtn").disabled = true;
@@ -551,16 +588,18 @@ class ReversibleSortingVisualiser extends Component {
     document.getElementById('dislayPseudocode').innerHTML =
       '<pre>' + pseudocode[algos._id - 1]() + '</pre>';
 
+    /* Number of Steps need to be recalculated
+     after changing the algorithm */
     this.clearColorCode();
-    // Save the array after the generation
     this.setState({
-      algoSteps: [this.state.inputArray],
+      /* Clears the existing steps of the previous algorithm */
+      inputArray: this.state.origArray,
+      algoSteps: [this.state.origArray],
+      sortingSteps: [this.state.origArray],
       /* After generation, step would be 0 */
       currentStep: 0,
     }, () => this.generateAlgoSteps());
-    console.log(this.state.inputArray);
-
-  }
+  };
 
   render() {
 
@@ -595,11 +634,15 @@ class ReversibleSortingVisualiser extends Component {
         <div className='buttonOutline'>
           <p id="sizeArr">Array Size </p>
           <input id="arrsize" type="range" min={10}
-                max={25} step={1} value={10} class="slider"
-                onChange={this.updateArraySize}/>
+            max={25} step={1} defaultValue={10} className="slider"
+            onChange={this.updateArraySize} />
+          <output htmlFor="range" id="outputSize">10</output>
 
           <p id="speedArr">Animation Speed</p>
-          <input id="speed" type="range" min={1} max={5} step={1} value={4}/>
+          <input id="speed" type="range" min={100} max={2000}
+            step={100} defaultValue={300}
+            onChange={this.updateAnimationSpeed} />
+          <output htmlFor="range" id="outputSpeed">300</output>
 
           <button id="rstbtn" onClick={this.generateArrayElements}>
             <Reset /></button>
@@ -607,7 +650,7 @@ class ReversibleSortingVisualiser extends Component {
             <Backward /></button>
           <button id="frwdbtn" onClick={this.handleForward}>
             <Forward /></button>
-          <button id="plybtn" onClick={this.handlePlay}>
+          <button id="plybtn" onClick={this.handleSort}>
             <Sort /></button>
           <button id="unsrtbtn" onClick={this.handleUnsorting}>
             <Unsort /></button>

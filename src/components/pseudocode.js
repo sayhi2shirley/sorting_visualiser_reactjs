@@ -78,3 +78,30 @@ export function algoBInsertionFunction() {
     'ind[j + 1] = key\n' + ' '.repeat(4) +
     'arr[j + 1] = temp\n\n';
 }
+
+export function algoCPermutationFunction() {
+  return 'Sort using the Permutations\n' + '-'.repeat(20) +
+        '\npermute(arr, result, m)\n' +
+        'sortedPerm = result.slice().sort()\n' +
+        'for i = 0 to sortedPerm.length do\n' + ' '.repeat(4) +
+        'hash[sortedPerm[i]] = i\nend for\n\n' +
+        'if sorting then\n' + ' '.repeat(4) +
+        'permNum = hash[arr]\n' + ' '.repeat(4) +
+        'ind = 0\nelse\n' + ' '.repeat(4) +
+        'ind = permNum\nend if\n\n' + 
+        'for val of sortedPerm[0] do\n' + ' '.repeat(4) +
+        'resultArr[j++] = val\nend for\n\n'+
+        'Find all permutations\n' + '-'.repeat(20) +
+        '\n\npermute (arr[0..n], result[], m[])\n' +
+        'Input: An array arr[] contains the original\n'+
+        'array, m[] initially holds empty array and\n'+ 
+        'result[][] contains empty array.\n\n'+
+        'if arr.length === 0 then\n' + ' '.repeat(4) +
+        'result.push(m)\n' + ' '.repeat(4) +
+        'return\nelse\n'  + ' '.repeat(4) +
+        'for i = 0 to arr.length do\n' +  ' '.repeat(8) +
+        'let curr = arr.slice()\n' +  ' '.repeat(8) +
+        'let next = curr.splice(i, 1)\n' +  ' '.repeat(8) +
+        'permute(curr.slice(), result, m.concat(next))\n' + ' '.repeat(4) +
+        'end for\nend if';
+}
