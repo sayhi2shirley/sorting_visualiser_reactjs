@@ -32,6 +32,8 @@ function insertionSort(arr, myMap, stps, sortStep, colors, clrCode)
       of their current position */
       while (j >= 0 && arr[j] > key) { 
           myMap.get(k).push(j);
+          // To display swapped-indices - Debugging
+          //console.log(myMap.get(k));
           k++;
 
           // Before-swap-Bar-Color-Coding Start
@@ -60,8 +62,18 @@ function insertionSort(arr, myMap, stps, sortStep, colors, clrCode)
           j = j - 1; 
           myMap.set(k, []);
           myMap.get(k).push(temp);
+          
       }
       arr[j + 1] = key; 
+      // After-ith-iteration-Color-Coding Start
+      clrCode[i] = 0;
+      clrCode[j+1] = 0;
+      clrCode[j] = 0;
+      stps.push(arr.slice());
+      sortStep.push(arr.slice());
+      colors.push(clrCode.slice());
+      // Before-ith-iteration-Color-Coding End
+
       myMap.get(k).push(temp);
   }
   colors[colors.length - 1] = new Array(arr.length).fill(2);

@@ -1,17 +1,13 @@
 
 /* 'PermutationSort AlgorithmC' Component to hold the random array values. */
-const permutationSortAlgorithmC = (arr, num, totSteps, sortSteps, arrColors) => {
-  let clrCode = arrColors[arrColors.length - 1].slice();
+const permutationSortAlgorithmC = (arr, num) => {
   var resArr = [];
   var originalArr = [];
-  algoC_PermutationSort(arr, resArr, num, totSteps,
-                        sortSteps, arrColors, clrCode, 1);
-  algoC_PermutationSort(resArr, originalArr, num, totSteps,
-                        sortSteps, arrColors, clrCode, 0);
+  algoC_PermutationSort(arr, resArr, num, 1);
+  algoC_PermutationSort(resArr, originalArr, num,  0);
 };
 
-function algoC_PermutationSort(arr, resultArr, permNum, stps,
-  lastSortStep, colors, clrCode, sorting) {
+function algoC_PermutationSort(arr, resultArr, permNum, sorting) {
 
   let result = [];
   let m = [];
@@ -45,7 +41,6 @@ function algoC_PermutationSort(arr, resultArr, permNum, stps,
   for (var vals of sortedPerm[ind]) {
     resultArr[j++] = vals;
   }
-  console.log("Sorted/Unsorted arr[]" + resultArr);
   return;
 }
 

@@ -11,7 +11,6 @@ export var pseudocode = [
   ]
 
 export function highlightPseudocode(text) {
-     //console.log(text);
      var currentPseudo = document.getElementById("dislayPseudocode");
      var currentLine = currentPseudo.innerHTML;
      var index = currentLine.indexOf(text);

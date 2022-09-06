@@ -5,7 +5,7 @@ import bubbleSortAlgorithmA from '../algorithms/unsort_bubblesort_algoA.js';
 import insertionSortAlgorithmA from '../algorithms/unsort_insertionsort_algoA';
 import bubbleSortAlgorithmB from '../algorithms/unsort_bubblesort_algoB';
 import insertionSortAlgorithmB from '../algorithms/unsort_insertionsort_algoB';
-import permutationSortAlgorithmC from '../algorithms/unsort_permutationsort_algoC'
+//import permutationSortAlgorithmC from '../algorithms/unsort_permutationsort_algoC'
 import Sort from '@material-ui/icons/SortSharp';
 import Reset from '@material-ui/icons/RotateLeft';
 import Stop from '@material-ui/icons/StopSharp'
@@ -20,7 +20,6 @@ class ReversibleSortingVisualiser extends Component {
   constructor(props) {
     super(props);
   
-    
     this.state = {
       inputArray: [],
       origArray: [],
@@ -31,7 +30,7 @@ class ReversibleSortingVisualiser extends Component {
       animationOn: 0,
       colorCode: [],
       barColors: [],
-      delay: 200,
+      delay: 300,
       sortingSteps: [], /* Number of steps required to sort */
       algoSteps: [],  /* Number of steps required to sort and unsort */
       currentStep: 0,
@@ -43,40 +42,40 @@ class ReversibleSortingVisualiser extends Component {
           name: 'Algorithm-A Bubble Sort',
           funcName: bubbleSortAlgorithmA,
           text: 'Algorithm-A Sort-Bubble Sort, Unsort-Tracking Swapped positions',
-          tc: 'Sort - O(n^2), Unsorting - O(n)',
-          sc: 'Sort - O(n^2), Unsorting - O(n)'
+          tc: 'Sort - O(n^2), Unsorting - O(n), T(n) = O(n^2)',
+          sc: 'Sort - O(n^2), Unsorting - O(n), O(n^2)'
         },
         { //key: 1, value: 
           _id: 2,
           name: 'Algorithm-A Insertion Sort',
           funcName: insertionSortAlgorithmA,
           text: 'Algorithm-A Sort-Insertion Sort, Unsort-Tracking Swapped positions',
-          tc: 'Sort - O(n^2), Unsorting - O(n)',
-          sc: 'Sort - O(n^2), Unsorting - O(n)'
+          tc: 'Sort - O(n^2), Unsorting - O(n), T(n) = O(n^2)',
+          sc: 'Sort - O(n^2), Unsorting - O(n), O(n^2)'
         },
         { //key: 2, value: 
           _id: 3,
           name: 'Algorithm-B Bubble Sort',
           funcName: bubbleSortAlgorithmB,
           text: 'Algorithm-B Sort-Bubble Sort, Unsort-Indices Array',
-          tc: 'Sort - O(n^2), Unsorting - O(n^2)',
-          sc: 'Sort - O(n)  , Unsorting - O(n)'
+          tc: 'Sort - O(n^2), Unsorting - O(n^2), T(n) = O(n^2)',
+          sc: 'Sort - O(n), Unsorting - O(n), O(n)'
         },
         { //key: 3, value: 
           _id: 4,
           name: 'Algorithm-B Insertion Sort',
           funcName: insertionSortAlgorithmB,
           text: 'Algorithm-B Sort-Insertion Sort, Unsort-Indices Array',
-          tc: 'Sort - O(n^2), Unsorting - O(n^2)',
-          sc: 'Sort - O(n)  , Unsorting - O(n)'
-        },
+          tc: 'Sort - O(n^2), Unsorting - O(n^2), T(n) = O(n^2)',
+          sc: 'Sort - O(n), Unsorting - O(n), O(n)'
+       /* },
         { //key: 4, value: 
           _id: 5,
           name: 'Algorithm-C Permutation Sort',
           funcName: permutationSortAlgorithmC,
           text: 'Algorithm-C Sort-Permutation, Unsort-Permutation',
-          tc: 'Sort - O(n!), Unsorting - O(n!)',
-          sc: 'Sort - O(n!), Unsorting - O(n!)'
+          tc: 'Sort - O(n!), Unsorting - O(n!), T(n) = O(n!)',
+          sc: 'Sort - O(n!), Unsorting - O(n!)' */
         }
       ],
     };
@@ -110,7 +109,6 @@ class ReversibleSortingVisualiser extends Component {
     let count = this.state.barCount;
 
     /* Fills the colorCode & barColors with default values */
-    //this.clearTimeout();
     this.clearColorCode();
 
     document.getElementById("arrsize").disabled = false;
@@ -184,7 +182,6 @@ class ReversibleSortingVisualiser extends Component {
   getKeyByAlgoName = (map, searchValue) => {
     for (let [key, value] of map.entries()) {
       if (value.name === searchValue) {
-        //console.log(key, value.name);
         return key;
       }
     }
@@ -207,7 +204,6 @@ class ReversibleSortingVisualiser extends Component {
     document.getElementById('dislayPseudocode').innerHTML = ''; // To clear the previous text
     document.getElementById('dislayPseudocode').innerHTML =
     '<pre>' + pseudocode[key]() + '</pre>';
-    //console.log('sorting steps' + sortSteps.length + ' steps ' + steps.length);
 
     /* Number of Steps and colors[][] will be created */
     if (this.state.algo[key].name === 'Algorithm-A Bubble Sort' ||
@@ -223,7 +219,7 @@ class ReversibleSortingVisualiser extends Component {
       this.state.algo[key].funcName(array, idx, totalSteps, sortSteps, colors);
       
     } else {
-      this.state.algo[key].funcName(array, perm, totalSteps, sortSteps, colors);
+      this.state.algo[key].funcName(array, perm);
     }
 
     this.setState({
@@ -236,20 +232,15 @@ class ReversibleSortingVisualiser extends Component {
     /* Display the Number of Operations */
     document.getElementById('numberofOperations').innerHTML = ''; // To clear the previous text
     document.getElementById('numberofOperations').innerHTML =
-      // eslint-disable-next-line
+    // eslint-disable-next-line 
       '<pre>' + '\nInput Array:        ' + array +
-      '\nTotal No of Steps:  ' + totalSteps.length +
-      '\nSorting Steps  :    ' + sortSteps.length +
-      '\nUnsorting Steps:    ' + (totalSteps.length - sortSteps.length) +
-      '\nTime Complexity:    ' + this.state.algo[key].tc +
-      '\nSpace Complexity:   ' + this.state.algo[key].sc + '</pre>';
+      '\nTotal No of Operations/Steps:  ' + totalSteps.length +
+      '\nSorting Steps:                 ' + sortSteps.length +
+      '\nUnsorting Steps:               ' + (totalSteps.length - sortSteps.length) +
+      '\nTime Complexity:               ' + this.state.algo[key].tc +
+      '\nSpace Complexity:              ' + this.state.algo[key].sc + '</pre>';
 
   };
-
-  /*clearTimeout = () => {
-    this.state.timeout.forEach(timeoutVal => this.clearTimeout(timeoutVal));
-    this.setState({ timeout: [] });
-  }; */
 
   // Clear the color code of the bar
   clearColorCode = () => {
@@ -259,7 +250,7 @@ class ReversibleSortingVisualiser extends Component {
     const numOfBars = new Array(size).fill(0);
 
     // Deep copy is performed
-    while ((size) >= 0) {
+    while ((size - 1) > 0) {
       numOfBars.push(0);
       size--;
     }
@@ -281,7 +272,6 @@ class ReversibleSortingVisualiser extends Component {
     });
 
     if (this.state.animationOn === 1) {
-      document.getElementById("plybtn").disabled = true;
       return;
     }
 
@@ -317,9 +307,7 @@ class ReversibleSortingVisualiser extends Component {
       colorCode: color[stp],
       currentStep: stp + 1,
     });
-
     if (this.state.animationOn === 1) {
-      document.getElementById("unsrtbtn").disabled = true;
       return;
     }
 
@@ -329,7 +317,6 @@ class ReversibleSortingVisualiser extends Component {
     if (this.state.currentStep < (noOfSteps.length - 1)) {
       setTimeout(this.unsortAnimation, this.state.delay);
     }
-
     // Finished executing the unsorting, update buttons
     if (this.state.currentStep === (noOfSteps.length - 1)) {
       document.getElementById("arrsize").disabled = false;
@@ -357,7 +344,6 @@ class ReversibleSortingVisualiser extends Component {
       return;
     }
 
-    //this.clearTimeout();
     document.getElementById("arrsize").disabled = true;
     document.getElementById("speed").disabled = true;
     document.getElementById("plybtn").disabled = true;
@@ -440,17 +426,19 @@ class ReversibleSortingVisualiser extends Component {
     });
 
     if (currentStp <= (this.state.sortingSteps.length - 1)) {
+      document.getElementById("arrsize").disabled = true;
       document.getElementById("unsrtbtn").disabled = true;
       document.getElementById("plybtn").disabled = false;
     } else if (currentStp >= (this.state.algoSteps.length - 1)) {
+      document.getElementById("arrsize").disabled = false;
       document.getElementById("plybtn").disabled = true;
       document.getElementById("unsrtbtn").disabled = true;
     } else {
+      document.getElementById("arrsize").disabled = true;
       document.getElementById("unsrtbtn").disabled = false;
       document.getElementById("plybtn").disabled = true;
     }
 
-    document.getElementById("arrsize").disabled = true;
     document.getElementById("speed").disabled = false;
     document.getElementById("rstbtn").disabled = true;
     document.getElementById("pasbtn").disabled = true;
@@ -497,7 +485,6 @@ class ReversibleSortingVisualiser extends Component {
 
     currentStp -= 1;
 
-    document.getElementById("arrsize").disabled = false;
     document.getElementById("speed").disabled = false;
     document.getElementById("rstbtn").disabled = false;
     document.getElementById("pasbtn").disabled = true;
@@ -511,12 +498,15 @@ class ReversibleSortingVisualiser extends Component {
     });
 
     if (currentStp <= (this.state.sortingSteps.length - 1)) {
+      document.getElementById("arrsize").disabled = true;
       document.getElementById("unsrtbtn").disabled = true;
       document.getElementById("plybtn").disabled = false;
     } else if (currentStp >= (this.state.algoSteps.length - 1)) {
+      document.getElementById("arrsize").disabled = false;
       document.getElementById("plybtn").disabled = true;
       document.getElementById("unsrtbtn").disabled = true;
     } else {
+      document.getElementById("arrsize").disabled = true;
       document.getElementById("unsrtbtn").disabled = false;
       document.getElementById("plybtn").disabled = true;
     }
@@ -526,7 +516,6 @@ class ReversibleSortingVisualiser extends Component {
   handleForward = () => {
     let currentStp = this.state.currentStep;
 
-    document.getElementById("arrsize").disabled = false;
     document.getElementById("speed").disabled = false;
     document.getElementById("rstbtn").disabled = false;
     document.getElementById("plybtn").disabled = false;
@@ -550,12 +539,15 @@ class ReversibleSortingVisualiser extends Component {
     });
 
     if (currentStp <= (this.state.sortingSteps.length - 1)) {
+      document.getElementById("arrsize").disabled = true;
       document.getElementById("unsrtbtn").disabled = true;
       document.getElementById("plybtn").disabled = false;
     } else if (currentStp >= (this.state.algoSteps.length - 1)) {
+      document.getElementById("arrsize").disabled = false;
       document.getElementById("plybtn").disabled = true;
       document.getElementById("unsrtbtn").disabled = true;
     } else {
+      document.getElementById("arrsize").disabled = true;
       document.getElementById("unsrtbtn").disabled = false;
       document.getElementById("plybtn").disabled = true;
     }
@@ -583,10 +575,6 @@ class ReversibleSortingVisualiser extends Component {
     document.getElementById("stpbtn").disabled = true;
     document.getElementById("bckbtn").disabled = true;
     document.getElementById("frwdbtn").disabled = false;
-
-    document.getElementById('dislayPseudocode').innerHTML = '';
-    document.getElementById('dislayPseudocode').innerHTML =
-      '<pre>' + pseudocode[algos._id - 1]() + '</pre>';
 
     /* Number of Steps need to be recalculated
      after changing the algorithm */

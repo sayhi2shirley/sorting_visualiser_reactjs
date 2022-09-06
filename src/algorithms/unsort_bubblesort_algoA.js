@@ -16,11 +16,11 @@ function algoA_BubbleSort(arr, myMap, stps, sortStep, colors, clrCode)
 	
         // Last i elements are already in place
         for (var j = 0; j < ( arr.length - i -1 ); j++) {
-          // Before-swap-Bar-Color-Coding Start
-          clrCode[j] = 1; 
-          clrCode[j + 1] = 1;
-          colors.push(clrCode.slice());
-          // Before-swap-Bar-Color-Coding End
+            // Before-swap-Bar-Color-Coding Start
+            clrCode[j] = 1; 
+            clrCode[j + 1] = 1;
+            colors.push(clrCode.slice());
+            // Before-swap-Bar-Color-Coding End
 
         	/* Checking if the item at present iteration
         	 is greater than the next iteration */
@@ -30,7 +30,8 @@ function algoA_BubbleSort(arr, myMap, stps, sortStep, colors, clrCode)
         	    myMap.get(k).push(j+1);
              	// If the condition is true then swap them
               swap(arr, j, j+1);
-              //console.log(myMap.get(k)); // To display swapped-indices
+              // To display swapped-indices - Debugging
+              console.log(myMap.get(k)); 
               k++;
 	        }
           // After-swap-Bar-Color-Coding Start
